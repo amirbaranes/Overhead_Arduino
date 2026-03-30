@@ -5,7 +5,7 @@
 ////////////////////////////
 // Constants and Globals
 ////////////////////////////
-#define DEVICE_ADDRESS "1234:BEAD:5" // TODO: Assign unique VJOY id
+#define DEVICE_ADDRESS "1234:BEAD:4" // TODO: Assign unique VJOY id
 #define DEVICE_GUID "{e839cd6d-121c-45ce-b664-817e7e047806}"
 
 enum {
@@ -16,7 +16,23 @@ enum {
   kSimCommand = 4,
 
   // === Data channels for components receiving data FROM SPAD.next ===
-  // ADD DATA CHANNELS HERE (start from 10)
+
+  // 7-Segment Displays
+  K_VHF2_ACTIVE = 10,
+  K_VHF2_STNDBY = 11,
+  K_NAV2_ACTIVE = 12,
+  K_NAV2_STNDBY = 13,
+  K_XPDR = 14,
+
+  // LED Annunciators
+  K_XPDR_TEST_LED = 15,
+  K_SELCAL_1_LED = 16,
+  K_SELCAL_2_LED = 17,
+  K_SELCAL_3_LED = 18,
+  K_SELCAL_4_LED = 19,
+  K_SELCAL_5_LED = 20,
+
+  // ADD MORE DATA CHANNELS HERE (increment from 20)
 };
 
 inline CmdMessenger messenger(Serial);

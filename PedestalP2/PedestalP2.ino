@@ -15,7 +15,17 @@ bool demoMode = false;
 int screenIntensity = 0;
 
 
-// ADD DISPLAY / SERVO / COMPONENT OBJECTS HERE
+// 7-Segment Displays (MAX7219 / LedControl)
+// LedControl(DataIn/DIO, CLK, CS/LOAD, number of devices)
+LedControl vhf2Active = LedControl(pin2, pin3, pin4, 1);
+LedControl vhf2Stndby = LedControl(pin5, pin6, pin7, 1);
+LedControl nav2Active = LedControl(pin14, pin15, pin16, 1);
+LedControl nav2Stndby = LedControl(pin17, pin18, pin19, 1);
+LedControl xpdrDisplay = LedControl(pin31, pin32, pin33, 1);
+
+const int displayBrightness = 1;
+noDelay displayDemo(1000);
+int displayDemoValue = 123;
 
 
 ////////////////////////////
@@ -25,20 +35,107 @@ int screenIntensity = 0;
 void setup() {
   Serial.begin(115200);
 
-  // ADD PIN MODES HERE
+  // VHF 2 buttons
+  pinMode(pin8, INPUT_PULLUP);   // VHF 2 TFR
+  pinMode(pin9, INPUT_PULLUP);   // VHF 2 com test
 
-  // initializeScreens();
+  // VHF 2 encoders
+  pinMode(pin10, INPUT_PULLUP);  // VHF 2 high CLK
+  pinMode(pin11, INPUT_PULLUP);  // VHF 2 high DT
+  pinMode(pin12, INPUT_PULLUP);  // VHF 2 low CLK
+  pinMode(pin13, INPUT_PULLUP);  // VHF 2 low DT
+
+  // NAV 2 buttons
+  pinMode(pin20, INPUT_PULLUP);  // NAV 2 TFR
+  pinMode(pin21, INPUT_PULLUP);  // NAV 2 com test
+
+  // NAV 2 encoders
+  pinMode(pin22, INPUT_PULLUP);  // NAV 2 high CLK
+  pinMode(pin23, INPUT_PULLUP);  // NAV 2 high DT
+  pinMode(pin24, INPUT_PULLUP);  // NAV 2 low CLK
+  pinMode(pin25, INPUT_PULLUP);  // NAV 2 low DT
+
+  // XPDR mode - 5 POS ROTARY
+  pinMode(pin26, INPUT_PULLUP);
+  pinMode(pin27, INPUT_PULLUP);
+  pinMode(pin28, INPUT_PULLUP);
+  pinMode(pin29, INPUT_PULLUP);
+  pinMode(pin30, INPUT_PULLUP);  // TA/RA
+
+  // XPDR encoders
+  pinMode(pin34, INPUT_PULLUP);  // XPDR first CLK
+  pinMode(pin35, INPUT_PULLUP);  // XPDR first DT
+  pinMode(pin36, INPUT_PULLUP);  // XPDR second CLK
+  pinMode(pin37, INPUT_PULLUP);  // XPDR second DT
+  pinMode(pin38, INPUT_PULLUP);  // XPDR third CLK
+  pinMode(pin39, INPUT_PULLUP);  // XPDR third DT
+  pinMode(pin40, INPUT_PULLUP);  // XPDR fourth CLK
+  pinMode(pin41, INPUT_PULLUP);  // XPDR fourth DT
+
+  // XPDR switches
+  pinMode(pin42, INPUT_PULLUP);  // XPDR 1
+  pinMode(pin43, INPUT_PULLUP);  // XPDR 2
+
+  // Alt Source switches
+  pinMode(pin44, INPUT_PULLUP);  // Alt Source 1
+  pinMode(pin45, INPUT_PULLUP);  // Alt Source 2
+
+  // Ident / XPDR test buttons
+  pinMode(pin46, INPUT_PULLUP);  // Ident
+  pinMode(pin47, INPUT_PULLUP);  // XPDR test
+
+  // XPDR test LED
+  pinMode(pin48, OUTPUT);
+
+  // SELCAL buttons
+  pinMode(pin49, INPUT_PULLUP);  // SELCAL 1
+  pinMode(pin50, INPUT_PULLUP);  // SELCAL 2
+  pinMode(pin51, INPUT_PULLUP);  // SELCAL 3
+  pinMode(pin52, INPUT_PULLUP);  // SELCAL 4
+  pinMode(pin53, INPUT_PULLUP);  // SELCAL 5
+
+  // SELCAL LEDs
+  pinMode(pinA1, OUTPUT);
+  pinMode(pinA2, OUTPUT);
+  pinMode(pinA3, OUTPUT);
+  pinMode(pinA4, OUTPUT);
+  pinMode(pinA5, OUTPUT);
+
+  initializeScreens();
   clearLeds();
 
   attachCommandCallbacks();
 }
 
-// void initializeScreens() {
-//   // ADD DISPLAY INITIALIZATIONS HERE
-// }
+void initializeScreens() {
+  vhf2Active.shutdown(0, false);
+  vhf2Active.setIntensity(0, screenIntensity);
+  vhf2Active.clearDisplay(0);
+
+  vhf2Stndby.shutdown(0, false);
+  vhf2Stndby.setIntensity(0, screenIntensity);
+  vhf2Stndby.clearDisplay(0);
+
+  nav2Active.shutdown(0, false);
+  nav2Active.setIntensity(0, screenIntensity);
+  nav2Active.clearDisplay(0);
+
+  nav2Stndby.shutdown(0, false);
+  nav2Stndby.setIntensity(0, screenIntensity);
+  nav2Stndby.clearDisplay(0);
+
+  xpdrDisplay.shutdown(0, false);
+  xpdrDisplay.setIntensity(0, screenIntensity);
+  xpdrDisplay.clearDisplay(0);
+}
 
 void clearLeds() {
-  // ADD LED CLEARS HERE
+  updateLedValue(pin48, 0, lastStatePin48);   // XPDR test LED
+  updateLedValue(pinA1, 0, lastStatePinA1);   // SELCAL 1 led
+  updateLedValue(pinA2, 0, lastStatePinA2);   // SELCAL 2 led
+  updateLedValue(pinA3, 0, lastStatePinA3);   // SELCAL 3 led
+  updateLedValue(pinA4, 0, lastStatePinA4);   // SELCAL 4 led
+  updateLedValue(pinA5, 0, lastStatePinA5);   // SELCAL 5 led
 }
 
 ////////////////////////////
@@ -49,8 +146,8 @@ void loop() {
   messenger.feedinSerialData();
 
   if (demoMode == true) {
-    // testDisplay();
-    // onAnnounciatorsDemo();
+    testDisplay();
+    onAnnounciatorsDemo();
   }
 
   unsigned long currentTime = millis();
@@ -58,13 +155,50 @@ void loop() {
   if (currentTime - lastBigDelayTime >= BigDelayInterval) {
     lastBigDelayTime = currentTime;
 
-    // ADD COMPONENT HANDLERS HERE (buttons, switches, rotaries, encoders)
-  }
+    // VHF 2 buttons
+    handleMomentaryButton(pin8, lastStatePin8, buttonId8);     // VHF 2 TFR
+    handleMomentaryButton(pin9, lastStatePin9, buttonId9);     // VHF 2 com test
 
-  if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {
-    lastSmallDelayTime = currentTime;
+    // VHF 2 encoders
+    handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF 2 high digit
+    handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF 2 low digit
 
-    // ADD FAST-POLLING HANDLERS HERE (potentiometers)
+    // NAV 2 buttons
+    handleMomentaryButton(pin20, lastStatePin20, buttonId20);  // NAV 2 TFR
+    handleMomentaryButton(pin21, lastStatePin21, buttonId21);  // NAV 2 com test
+
+    // NAV 2 encoders
+    handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV 2 high digit
+    handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV 2 low digit
+
+    // XPDR mode - 5 POS ROTARY
+    handle5PositionRotary(pin26, pin27, pin28, pin29, xpdrModeLastState,
+      buttonId26, buttonId27, buttonId28, buttonId29, buttonId30);
+
+    // XPDR encoders
+    handleRotaryEncoder(pin34, pin35, lastStatePin34, buttonId34, buttonId35);  // XPDR first digit
+    handleRotaryEncoder(pin36, pin37, lastStatePin36, buttonId36, buttonId37);  // XPDR second digit
+    handleRotaryEncoder(pin38, pin39, lastStatePin38, buttonId38, buttonId39);  // XPDR third digit
+    handleRotaryEncoder(pin40, pin41, lastStatePin40, buttonId40, buttonId41);  // XPDR fourth digit
+
+    // XPDR switches
+    handleOnOffSwitch(pin42, lastStatePin42, buttonId42);  // XPDR 1
+    handleOnOffSwitch(pin43, lastStatePin43, buttonId43);  // XPDR 2
+
+    // Alt Source switches
+    handleOnOffSwitch(pin44, lastStatePin44, buttonId44);  // Alt Source 1
+    handleOnOffSwitch(pin45, lastStatePin45, buttonId45);  // Alt Source 2
+
+    // Ident / XPDR test buttons
+    handleMomentaryButton(pin46, lastStatePin46, buttonId46);  // Ident
+    handleMomentaryButton(pin47, lastStatePin47, buttonId47);  // XPDR test
+
+    // SELCAL buttons
+    handleMomentaryButton(pin49, lastStatePin49, buttonId49);  // SELCAL 1
+    handleMomentaryButton(pin50, lastStatePin50, buttonId50);  // SELCAL 2
+    handleMomentaryButton(pin51, lastStatePin51, buttonId51);  // SELCAL 3
+    handleMomentaryButton(pin52, lastStatePin52, buttonId52);  // SELCAL 4
+    handleMomentaryButton(pin53, lastStatePin53, buttonId53);  // SELCAL 5
   }
 }
 
@@ -73,11 +207,45 @@ void loop() {
 // Demo
 ////////////////////////////
 
-// void testDisplay() {
-// }
+void testDisplay() {
+  if (displayDemo.update()) {
+    if (displayDemoValue == 999) {
+      displayDemoValue = 123;
+    }
 
-// void onAnnounciatorsDemo() {
-// }
+    vhf2Active.setDigit(0, 0, 1, false);
+    vhf2Active.setDigit(0, 1, 1, false);
+    vhf2Active.setDigit(0, 2, 1, false);
+
+    vhf2Stndby.setDigit(0, 0, 1, false);
+    vhf2Stndby.setDigit(0, 1, 1, false);
+    vhf2Stndby.setDigit(0, 2, 1, false);
+
+    nav2Active.setDigit(0, 0, 1, false);
+    nav2Active.setDigit(0, 1, 1, false);
+    nav2Active.setDigit(0, 2, 1, false);
+
+    nav2Stndby.setDigit(0, 0, 1, false);
+    nav2Stndby.setDigit(0, 1, 1, false);
+    nav2Stndby.setDigit(0, 2, 1, false);
+
+    xpdrDisplay.setDigit(0, 0, 1, false);
+    xpdrDisplay.setDigit(0, 1, 1, false);
+    xpdrDisplay.setDigit(0, 2, 1, false);
+    xpdrDisplay.setDigit(0, 3, 1, false);
+
+    displayDemoValue++;
+  }
+}
+
+void onAnnounciatorsDemo() {
+  testAnnounciatorBlink(pin48);   // XPDR test LED
+  testAnnounciatorBlink(pinA1);   // SELCAL 1 led
+  testAnnounciatorBlink(pinA2);   // SELCAL 2 led
+  testAnnounciatorBlink(pinA3);   // SELCAL 3 led
+  testAnnounciatorBlink(pinA4);   // SELCAL 4 led
+  testAnnounciatorBlink(pinA5);   // SELCAL 5 led
+}
 
 
 ////////////////////////////
@@ -91,14 +259,112 @@ void onSimState() {
   isSimConnected = val == 1;
 }
 
-// ADD CALLBACKS HERE
+// Display callbacks
+void onVhf2ActiveChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(vhf2Active, reversed);
+}
+
+void onVhf2StndbyChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(vhf2Stndby, reversed);
+}
+
+void onNav2ActiveChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(nav2Active, reversed);
+}
+
+void onNav2StndbyChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(nav2Stndby, reversed);
+}
+
+void onXpdrChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(xpdrDisplay, reversed);
+}
+
+// LED callbacks
+void onXpdrTestLedChange() {
+  int val = messenger.readInt32Arg();
+  updateLedValue(pin48, val, lastStatePin48);
+}
+
+void onSelcal1LedChange() {
+  int val = messenger.readInt32Arg();
+  updateLedValue(pinA1, val, lastStatePinA1);
+}
+
+void onSelcal2LedChange() {
+  int val = messenger.readInt32Arg();
+  updateLedValue(pinA2, val, lastStatePinA2);
+}
+
+void onSelcal3LedChange() {
+  int val = messenger.readInt32Arg();
+  updateLedValue(pinA3, val, lastStatePinA3);
+}
+
+void onSelcal4LedChange() {
+  int val = messenger.readInt32Arg();
+  updateLedValue(pinA4, val, lastStatePinA4);
+}
+
+void onSelcal5LedChange() {
+  int val = messenger.readInt32Arg();
+  updateLedValue(pinA5, val, lastStatePinA5);
+}
 
 
 void attachCommandCallbacks() {
   messenger.attach(onUnknownCommand);
   messenger.attach(kRequest, onIdentifyRequest);
 
-  // ADD CALLBACK ATTACHMENTS HERE
+  // Displays
+  messenger.attach(K_VHF2_ACTIVE, onVhf2ActiveChange);
+  messenger.attach(K_VHF2_STNDBY, onVhf2StndbyChange);
+  messenger.attach(K_NAV2_ACTIVE, onNav2ActiveChange);
+  messenger.attach(K_NAV2_STNDBY, onNav2StndbyChange);
+  messenger.attach(K_XPDR, onXpdrChange);
+
+  // LEDs
+  messenger.attach(K_XPDR_TEST_LED, onXpdrTestLedChange);
+  messenger.attach(K_SELCAL_1_LED, onSelcal1LedChange);
+  messenger.attach(K_SELCAL_2_LED, onSelcal2LedChange);
+  messenger.attach(K_SELCAL_3_LED, onSelcal3LedChange);
+  messenger.attach(K_SELCAL_4_LED, onSelcal4LedChange);
+  messenger.attach(K_SELCAL_5_LED, onSelcal5LedChange);
 }
 
 
@@ -120,7 +386,110 @@ void onIdentifyRequest() {
 
   } else if (strcmp(request, "CONFIG") == 0) {
 
-    // ADD CONFIG REGISTRATIONS HERE
+    // === 7-Segment Displays ===
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_VHF2_ACTIVE);
+    messenger.sendCmdArg(F("Pedestal_P2/K_VHF2_ACTIVE"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_VHF2_ACTIVE"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_VHF2_STNDBY);
+    messenger.sendCmdArg(F("Pedestal_P2/K_VHF2_STNDBY"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_VHF2_STNDBY"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_NAV2_ACTIVE);
+    messenger.sendCmdArg(F("Pedestal_P2/K_NAV2_ACTIVE"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_NAV2_ACTIVE"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_NAV2_STNDBY);
+    messenger.sendCmdArg(F("Pedestal_P2/K_NAV2_STNDBY"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_NAV2_STNDBY"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_XPDR);
+    messenger.sendCmdArg(F("Pedestal_P2/K_XPDR"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_XPDR"));
+    messenger.sendCmdEnd();
+
+    // === LED Annunciators ===
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_XPDR_TEST_LED);
+    messenger.sendCmdArg(F("Pedestal_P2/K_XPDR_TEST_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_XPDR_TEST_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_SELCAL_1_LED);
+    messenger.sendCmdArg(F("Pedestal_P2/K_SELCAL_1_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_SELCAL_1_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_SELCAL_2_LED);
+    messenger.sendCmdArg(F("Pedestal_P2/K_SELCAL_2_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_SELCAL_2_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_SELCAL_3_LED);
+    messenger.sendCmdArg(F("Pedestal_P2/K_SELCAL_3_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_SELCAL_3_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_SELCAL_4_LED);
+    messenger.sendCmdArg(F("Pedestal_P2/K_SELCAL_4_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_SELCAL_4_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_SELCAL_5_LED);
+    messenger.sendCmdArg(F("Pedestal_P2/K_SELCAL_5_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_SELCAL_5_LED"));
+    messenger.sendCmdEnd();
+
+    // ADD MORE CONFIG REGISTRATIONS HERE
 
     delay(1000);
 

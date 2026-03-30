@@ -2,7 +2,7 @@
 // Component Definitions
 ////////////////////////////
 
-// Buttons start index 1 - 16 (Pedestal P1 scope)
+// Buttons start index 1 - 20 (Pedestal P1 scope)
 // Since Pedestal uses its own DEVICE_ADDRESS/VJOY, button IDs are independent from Overhead
 
 

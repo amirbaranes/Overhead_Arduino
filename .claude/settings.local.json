@@ -9,7 +9,8 @@
       "Bash(cp /Users/amirbaranes/Downloads/Overhead_Arduino/PedestalP1/RotaryEncoders.cpp /Users/amirbaranes/Downloads/Overhead_Arduino/$dir/RotaryEncoders.cpp)",
       "Bash(do echo:*)",
       "Read(//Users/amirbaranes/Downloads/Overhead_Arduino/**)",
-      "Bash(done)"
+      "Bash(done)",
+      "Skill(google-sheets)"
     ]
   }
 }
