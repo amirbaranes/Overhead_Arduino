@@ -20,8 +20,8 @@ enum {
   // 7-Segment Displays
   K_VHF1_ACTIVE = 10,
   K_VHF1_STNDBY = 11,
-  K_VHF2_ACTIVE = 12,
-  K_VHF2_STNDBY = 13,
+  K_NAV1_ACTIVE = 12,
+  K_NAV1_STNDBY = 13,
 
   // LED Annunciators
   K_CARGO_FIRE_EXT_FWD = 14,
