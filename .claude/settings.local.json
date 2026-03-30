@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(uuidgen)"
+      "Bash(uuidgen)",
+      "Bash(for dir:*)",
+      "Bash(do cp:*)",
+      "Bash(cp /Users/amirbaranes/Downloads/Overhead_Arduino/PedestalP1/Switches.cpp /Users/amirbaranes/Downloads/Overhead_Arduino/$dir/Switches.cpp)",
+      "Bash(cp /Users/amirbaranes/Downloads/Overhead_Arduino/PedestalP1/RotatorySwitch.cpp /Users/amirbaranes/Downloads/Overhead_Arduino/$dir/RotatorySwitch.cpp)",
+      "Bash(cp /Users/amirbaranes/Downloads/Overhead_Arduino/PedestalP1/RotaryEncoders.cpp /Users/amirbaranes/Downloads/Overhead_Arduino/$dir/RotaryEncoders.cpp)"
     ]
   }
 }
