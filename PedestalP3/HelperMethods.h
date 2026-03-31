@@ -1,11 +1,12 @@
 #include <CmdMessenger.h>
 #include <Encoder.h>
 #include <LedControl.h>
+#include <Servo.h>
 
 ////////////////////////////
 // Constants and Globals
 ////////////////////////////
-#define DEVICE_ADDRESS "1234:BEAD:6" // TODO: Assign unique VJOY id
+#define DEVICE_ADDRESS "1234:BEAD:4" // Same VJOY as P1/P2
 #define DEVICE_GUID "{ac51f8a0-ee68-45e6-ac2e-25e3ab2e531d}"
 
 enum {
@@ -16,7 +17,20 @@ enum {
   kSimCommand = 4,
 
   // === Data channels for components receiving data FROM SPAD.next ===
-  // ADD DATA CHANNELS HERE (start from 10)
+
+  // 7-Segment Displays
+  K_ADF2_ACTIVE = 10,
+  K_ADF2_STNDBY = 11,
+  K_ADF1_ACTIVE = 12,
+  K_ADF1_STNDBY = 13,
+
+  // Servo
+  K_AILERON_SERVO = 14,
+
+  // LED
+  K_CABIN_DOOR_LED = 15,
+
+  // ADD MORE DATA CHANNELS HERE (increment from 15)
 };
 
 inline CmdMessenger messenger(Serial);
