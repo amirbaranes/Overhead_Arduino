@@ -85,6 +85,11 @@ void setup() {
 
   // pinA0, pinA1 - analog, no pinMode needed for potentiometers
 
+  // CargoFire extra buttons
+  pinMode(pinA8, INPUT_PULLUP);   // CargoFire fwd arm button2
+  pinMode(pinA9, INPUT_PULLUP);   // CargoFire aft arm button2
+  pinMode(pinA10, INPUT_PULLUP);  // CargoFire discharg2
+
   initializeScreens();
   clearLeds();
 
@@ -172,6 +177,11 @@ void loop() {
 
     // WX radar mode - 3 POS ROTARY
     handle3PositionRotary(pin47, pin48, wxRadarModeLastState, buttonId47, buttonId48, buttonId49);
+
+    // CargoFire extra buttons
+    handleMomentaryButton(pinA8, lastStatePinA8, buttonIdA8);    // CargoFire fwd arm button2
+    handleMomentaryButton(pinA9, lastStatePinA9, buttonIdA9);    // CargoFire aft arm button2
+    handleMomentaryButton(pinA10, lastStatePinA10, buttonIdA10); // CargoFire discharg2
   }
 
   if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {

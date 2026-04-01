@@ -174,4 +174,19 @@ const int pin49 = 49; // turb_map
 int wxRadarModeLastState = HIGH;
 const char* buttonId47 = "BUTTON_23";  
 const char* buttonId48 = "BUTTON_24";  
-const char* buttonId49 = "BUTTON_25"; 
+const char* buttonId49 = "BUTTON_25";
+
+// CargoFire fwd arm button2  - Momentary Button (push button)
+const int pinA8 = A8;
+int lastStatePinA8 = HIGH;
+const char* buttonIdA8 = "BUTTON_26";
+
+// CargoFire aft arm button2  - Momentary Button (push button)
+const int pinA9 = A9;
+int lastStatePinA9 = HIGH;
+const char* buttonIdA9 = "BUTTON_27";
+
+// CargoFire discharg2  - Momentary Button (push button)
+const int pinA10 = A10;
+int lastStatePinA10 = HIGH;
+const char* buttonIdA10 = "BUTTON_28";
