@@ -160,6 +160,12 @@ void loop() {
     handleOnOffSwitch(pin50, lastStatePin50, buttonId50);  // ovrd
     handleOnOffSwitch(pin51, lastStatePin51, buttonId51);  // norm
   }
+
+  if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {
+    lastSmallDelayTime = currentTime;
+
+    handlePotentiometer2(pinA0, pinA0PotMin, pinA0PotMax, pinA0PotAddress, pinA0PotLastVal);  // Flood Bright
+  }
 }
 
 

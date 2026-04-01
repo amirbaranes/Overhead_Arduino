@@ -118,3 +118,10 @@ const char* buttonId51 = "BUTTON_78";
 // Cabin door led  --LED
 const int pin52 = 52;
 int lastStatePin52 = HIGH;
+
+// Flood Bright - Potentiometer (analog input)
+const int pinA0 = A0;
+int pinA0PotLastVal = 0;
+int pinA0PotMin = 0;
+int pinA0PotMax = 270;
+const char* pinA0PotAddress = "PMDGNG3:EVT_PEDESTAL_FLOOD_BRIGHT";  // TODO: Replace with real PMDG address
