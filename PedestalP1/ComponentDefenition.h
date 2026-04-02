@@ -6,12 +6,25 @@
 // Since Pedestal uses its own DEVICE_ADDRESS/VJOY, button IDs are independent from Overhead
 
 
+// origin /// actual pin
+// CargoFire ext fwd.  / CargoFire ext aft
+// CargoFire ext aft. / CargoFire ext fwd
+// CargoFire detector fault / CargoFire fwd arm yellow
+// CargoFire fwd arm yellow // CargoFire detector fault
+// CargoFire fwd arm red / CargoFire aft arm yellow
+// CargoFire aft arm yellow / CargoFire fwd arm red 
+// CargoFire aft arm red / CargoFire discharg1
+// CargoFire discharg1 / CargoFire discharg1
+// CargoFire discharg2 / CargoFire aft arm red
 
+
+//Verified
 // VHF2 Active  - 7Seg
 const int pin2 = 2; // DIO
 const int pin3 = 3; //CLK
 const int pin4 = 4; //CS
 
+//Verified
 // VHF2 Stndby  - 7Seg
 const int pin5 = 5; // DIO
 const int pin6 = 6; //CLK
@@ -47,17 +60,19 @@ int lastStatePin13 = HIGH;
 const char* buttonId12 = "BUTTON_5";   // CW
 const char* buttonId13 = "BUTTON_6"; // CCW
 
+//Verified
 // NAV2 Active  - 7Seg
 const int pin14 = 17; // DIO
 const int pin15 = 18; //CLK
 const int pin16 = 19; //CS
 
+//Verified
 // NAV2 Stndby  - 7Seg
 const int pin17 = 14; // DIO
 const int pin18 = 16; //CLK
 const int pin19 = 15; //CS
 
-// fix
+//Verified
 // NAV2 TFR  - Momentary Button (push button)
 const int pin20 = 20;
 int lastStatePin20 = HIGH;
@@ -87,6 +102,7 @@ int lastStatePin25 = HIGH;
 const char* buttonId24 = "BUTTON_11";   // CW
 const char* buttonId25 = "BUTTON_12"; // CCW
 
+//Verified
 //CargoFire ext fwd  --LED
 const int pin26 = 26;
 int lastStatePin26 = HIGH;
@@ -121,14 +137,17 @@ const char* buttonId32 = "BUTTON_17";
 const char* buttonId33 = "BUTTON_18";  
 const char* buttonId34 = "BUTTON_19"; 
 
+//Verified
 //CargoFire detector fault  --LED
 const int pin35 = 35;
 int lastStatePin35 = HIGH;
 
+//Verified
 //CargoFire fwd arm yellow  --LED
 const int pin36 = 36;
 int lastStatePin36 = HIGH;
 
+//Verified
 //CargoFire fwd arm red  --LED
 const int pin37 = 37;
 int lastStatePin37 = HIGH;
@@ -139,10 +158,12 @@ const int pin38 = 38;
 int lastStatePin38 = HIGH;
 const char* buttonId38 = "BUTTON_20";
 
+//Verified
 // CargoFire aft arm yellow  --LED
 const int pin39 = 39;
 int lastStatePin39 = HIGH;
 
+//Verified
 // CargoFire aft arm red  --LED
 const int pin40 = 40;
 int lastStatePin40 = HIGH;
@@ -152,16 +173,19 @@ int lastStatePin40 = HIGH;
 const int pin41 = 41;
 int lastStatePin41 = HIGH;
 const char* buttonId41 = "BUTTON_21";
+
 //Verified
 // CargoFire discharg(push button)
 const int pin42 = 42;
 int lastStatePin42 = HIGH;
 const char* buttonId42 = "BUTTON_22";
 
+//Verified
 // CargoFire discharg1  --LED
-const int pin43 = 43;
-int lastStatePin43 = HIGH;
+const int pin45 = 45;
+int lastStatePin45 = HIGH;
 
+//Verified
 // CargoFire discharg2  --LED
 const int pin44 = 44;
 int lastStatePin44 = HIGH;
@@ -182,6 +206,7 @@ int pinA1PotMin = 0;
 int pinA1PotMax = 270;
 const char* pinA1PotAddress = "PMDGNG3:EVT_PEDESTAL_EXAMPLE";  // TODO: Replace with real PMDG address
 
+//Verified
 // wx radar mode  - 3 POS ROTARY
 const int pin48 = 48; // test
 const int pin49 = 49; // wx

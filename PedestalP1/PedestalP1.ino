@@ -24,7 +24,6 @@ LedControl nav2Stndby = LedControl(pin17, pin18, pin19, 1);
 
 const int displayBrightness = 1;
 noDelay displayDemo(500);
-long displayDemoValue = 10000;
 
 
 ////////////////////////////
@@ -62,7 +61,7 @@ void setup() {
   pinMode(pin37, OUTPUT);   // CargoFire fwd arm red
   pinMode(pin39, OUTPUT);   // CargoFire aft arm yellow
   pinMode(pin40, OUTPUT);   // CargoFire aft arm red
-  pinMode(pin43, OUTPUT);   // CargoFire discharg1
+  pinMode(pin45, OUTPUT);   // CargoFire discharg1
   pinMode(pin44, OUTPUT);   // CargoFire discharg2
 
   // CargoFire buttons
@@ -117,8 +116,8 @@ void initializeScreens() {
   nav2Stndby.setIntensity(0, screenIntensity);
   nav2Stndby.clearDisplay(0);
 
-  // showNumberOnDisplay(nav2Stndby,"300.66",5);
-  // showNumberOnDisplay(nav2Active,"300.66",5);
+   //showNumberOnDisplay(nav2Stndby,"300.66",5);
+   //showNumberOnDisplay(nav2Active,"300.88",5);
 }
 
 void clearLeds() {
@@ -129,7 +128,7 @@ void clearLeds() {
   updateLedValue(pin37, 0, lastStatePin37);  // CargoFire fwd arm red
   updateLedValue(pin39, 0, lastStatePin39);  // CargoFire aft arm yellow
   updateLedValue(pin40, 0, lastStatePin40);  // CargoFire aft arm red
-  updateLedValue(pin43, 0, lastStatePin43);  // CargoFire discharg1
+  updateLedValue(pin45, 0, lastStatePin45);  // CargoFire discharg1
   updateLedValue(pin44, 0, lastStatePin44);  // CargoFire discharg2
 }
 
@@ -203,25 +202,36 @@ void loop() {
 
 void testDisplay() {
   if (displayDemo.update()) {
-    showNumberOnDisplay(vhf2Active, displayDemoValue, 6);   // VHF 6 digits
-    showNumberOnDisplay(vhf2Stndby, displayDemoValue, 6);   // VHF 6 digits
-    showNumberOnDisplay(nav2Active, displayDemoValue, 5);   // NAV 5 digits
-    showNumberOnDisplay(nav2Stndby, displayDemoValue, 5);   // NAV 5 digits
+    // Generate random VHF frequencies xxx.xxx (118.000 - 136.999)
+    char vhfBuf[10];
+    int vhfInt = random(118, 137);
+    int vhfDec = random(0, 1000);
+    sprintf(vhfBuf, "%d.%03d", vhfInt, vhfDec);
+    showNumberOnDisplay(vhf2Active, vhfBuf, 6);
 
-    displayDemoValue++;
+    sprintf(vhfBuf, "%d.%03d", random(118, 137), random(0, 1000));
+    showNumberOnDisplay(vhf2Stndby, vhfBuf, 6);
+
+    // Generate random NAV frequencies xxx.xx (108.00 - 117.99)
+    char navBuf[10];
+    sprintf(navBuf, "%d.%02d", random(108, 118), random(0, 100));
+    showNumberOnDisplay(nav2Active, navBuf, 5);
+
+    sprintf(navBuf, "%d.%02d", random(108, 118), random(0, 100));
+    showNumberOnDisplay(nav2Stndby, navBuf, 5);
   }
 }
 
 void onAnnounciatorsDemo() {
-  testAnnounciatorBlink(pin26);   // CargoFire ext fwd
-  testAnnounciatorBlink(pin27);   // CargoFire ext aft
-  testAnnounciatorBlink(pin35);   // CargoFire detector fault
-  testAnnounciatorBlink(pin36);   // CargoFire fwd arm yellow
-  testAnnounciatorBlink(pin37);   // CargoFire fwd arm red
-  testAnnounciatorBlink(pin39);   // CargoFire aft arm yellow
-  testAnnounciatorBlink(pin40);   // CargoFire aft arm red
-  testAnnounciatorBlink(pin43);   // CargoFire discharg1
-  testAnnounciatorBlink(pin44);   // CargoFire discharg2
+   testAnnounciatorBlink(pin26);   // CargoFire ext fwd.  / CargoFire ext aft
+   testAnnounciatorBlink(pin27);   // CargoFire ext aft. / CargoFire ext fwd
+   testAnnounciatorBlink(pin35);   // CargoFire detector fault / CargoFire fwd arm yellow
+   testAnnounciatorBlink(pin36);   // CargoFire fwd arm yellow // CargoFire detector fault
+   testAnnounciatorBlink(pin37);   // CargoFire fwd arm red / CargoFire aft arm yellow
+   testAnnounciatorBlink(pin39);   // CargoFire aft arm yellow / CargoFire fwd arm red 
+   testAnnounciatorBlink(pin40);   // CargoFire aft arm red / CargoFire discharg1
+   testAnnounciatorBlink(pin45);   // CargoFire discharg1 / CargoFire discharg1
+   testAnnounciatorBlink(pin44);   // CargoFire discharg2 / CargoFire aft arm red
 }
 
 
@@ -319,7 +329,7 @@ void onCargoFireAftArmRedChange() {
 
 void onCargoFireDischarg1Change() {
   int val = messenger.readInt32Arg();
-  updateLedValue(pin43, val, lastStatePin43);
+  updateLedValue(pin45, val, lastStatePin45);
 }
 
 void onCargoFireDischarg2Change() {

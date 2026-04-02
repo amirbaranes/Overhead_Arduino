@@ -65,9 +65,36 @@ void updateMax7219Display(LedControl display, long number, int decimalPlaces) {
   }
 }
 
-void showNumberOnDisplay(LedControl &disp, const char* value, int deviceDigits) {
-  disp.clearDisplay(0);
+// Cache for last displayed values per display (up to 8 displays, 8 digits each)
+struct DisplayCache {
+  LedControl* disp;
+  int digits[8];
+  bool dp[8];
+  int numDigits;
+};
 
+static DisplayCache displayCaches[8];
+static int displayCacheCount = 0;
+
+DisplayCache* getDisplayCache(LedControl &disp, int deviceDigits) {
+  for (int i = 0; i < displayCacheCount; i++) {
+    if (displayCaches[i].disp == &disp) return &displayCaches[i];
+  }
+  // New display - initialize cache
+  if (displayCacheCount < 8) {
+    DisplayCache* cache = &displayCaches[displayCacheCount++];
+    cache->disp = &disp;
+    cache->numDigits = deviceDigits;
+    for (int i = 0; i < 8; i++) {
+      cache->digits[i] = -1;
+      cache->dp[i] = false;
+    }
+    return cache;
+  }
+  return NULL;
+}
+
+void showNumberOnDisplay(LedControl &disp, const char* value, int deviceDigits) {
   // Extract digits and find decimal point position
   int digits[16];
   int digitCount = 0;
@@ -81,13 +108,27 @@ void showNumberOnDisplay(LedControl &disp, const char* value, int deviceDigits) 
     }
   }
 
-  // Write to display with leading zeros (position 0 = leftmost)
+  // Build new display state
   int padding = deviceDigits - digitCount;
+  int newDigits[8];
+  bool newDp[8];
 
   for (int pos = 0; pos < deviceDigits; pos++) {
     int idx = pos - padding;
-    int d = (idx >= 0 && idx < digitCount) ? digits[idx] : 0;
-    bool dp = (decimalAfterDigit >= 0 && idx == decimalAfterDigit);
-    disp.setDigit(0, pos, d, dp);
+    newDigits[pos] = (idx >= 0 && idx < digitCount) ? digits[idx] : 0;
+    newDp[pos] = (decimalAfterDigit >= 0 && idx == decimalAfterDigit);
+  }
+
+  // Get cache and only update changed digits
+  DisplayCache* cache = getDisplayCache(disp, deviceDigits);
+
+  for (int pos = 0; pos < deviceDigits; pos++) {
+    if (cache == NULL || newDigits[pos] != cache->digits[pos] || newDp[pos] != cache->dp[pos]) {
+      disp.setDigit(0, pos, newDigits[pos], newDp[pos]);
+      if (cache) {
+        cache->digits[pos] = newDigits[pos];
+        cache->dp[pos] = newDp[pos];
+      }
+    }
   }
 }
