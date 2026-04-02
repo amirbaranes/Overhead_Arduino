@@ -24,8 +24,7 @@ LedControl nav2Stndby = LedControl(pin17, pin18, pin19, 1);
 LedControl xpdrDisplay = LedControl(pin31, pin32, pin33, 1);
 
 const int displayBrightness = 1;
-noDelay displayDemo(1000);
-int displayDemoValue = 123;
+noDelay displayDemo(500);
 
 
 ////////////////////////////
@@ -209,32 +208,26 @@ void loop() {
 
 void testDisplay() {
   if (displayDemo.update()) {
-    if (displayDemoValue == 999) {
-      displayDemoValue = 123;
-    }
+    // Generate random VHF frequencies xxx.xxx (118.000 - 136.999)
+    char vhfBuf[10];
+    sprintf(vhfBuf, "%d.%03d", random(118, 137), random(0, 1000));
+    showNumberOnDisplay(vhf2Active, vhfBuf, 6);
 
-    vhf2Active.setDigit(0, 0, 1, false);
-    vhf2Active.setDigit(0, 1, 1, false);
-    vhf2Active.setDigit(0, 2, 1, false);
+    sprintf(vhfBuf, "%d.%03d", random(118, 137), random(0, 1000));
+    showNumberOnDisplay(vhf2Stndby, vhfBuf, 6);
 
-    vhf2Stndby.setDigit(0, 0, 1, false);
-    vhf2Stndby.setDigit(0, 1, 1, false);
-    vhf2Stndby.setDigit(0, 2, 1, false);
+    // Generate random NAV frequencies xxx.xx (108.00 - 117.99)
+    char navBuf[10];
+    sprintf(navBuf, "%d.%02d", random(108, 118), random(0, 100));
+    showNumberOnDisplay(nav2Active, navBuf, 5);
 
-    nav2Active.setDigit(0, 0, 1, false);
-    nav2Active.setDigit(0, 1, 1, false);
-    nav2Active.setDigit(0, 2, 1, false);
+    sprintf(navBuf, "%d.%02d", random(108, 118), random(0, 100));
+    showNumberOnDisplay(nav2Stndby, navBuf, 5);
 
-    nav2Stndby.setDigit(0, 0, 1, false);
-    nav2Stndby.setDigit(0, 1, 1, false);
-    nav2Stndby.setDigit(0, 2, 1, false);
-
-    xpdrDisplay.setDigit(0, 0, 1, false);
-    xpdrDisplay.setDigit(0, 1, 1, false);
-    xpdrDisplay.setDigit(0, 2, 1, false);
-    xpdrDisplay.setDigit(0, 3, 1, false);
-
-    displayDemoValue++;
+    // Generate random XPDR code (0000 - 7777, octal digits only)
+    char xpdrBuf[6];
+    sprintf(xpdrBuf, "%d%d%d%d", random(0, 8), random(0, 8), random(0, 8), random(0, 8));
+    showNumberOnDisplay(xpdrDisplay, xpdrBuf, 4);
   }
 }
 

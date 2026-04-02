@@ -61,7 +61,8 @@ void testAnnounciatorBlink(int pin);
 void attachCommandCallbacks();
 void onIdentifyRequest();
 void updateLedValue(int pin, int value, int& lastPinValue);
-void updateMax7219Display(LedControl display, long number);
+void updateMax7219Display(LedControl display, long number, int decimalPlaces = 0);
+void showNumberOnDisplay(LedControl &disp, const char* value, int deviceDigits);
 
 // Buttons
 void handleMomentaryButton(int buttonPin, int &lastState, const char* buttonId);

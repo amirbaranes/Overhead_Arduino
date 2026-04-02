@@ -5,7 +5,7 @@
 ////////////////////////////
 // Constants and Globals
 ////////////////////////////
-#define DEVICE_ADDRESS "1234:BEAD:4" // TODO: Assign unique VJOY id
+#define DEVICE_ADDRESS "1234:BEAD:4" // Same VJOY as P1
 #define DEVICE_GUID "{e839cd6d-121c-45ce-b664-817e7e047806}"
 
 enum {
@@ -50,7 +50,8 @@ void testAnnounciatorBlink(int pin);
 void attachCommandCallbacks();
 void onIdentifyRequest();
 void updateLedValue(int pin, int value, int& lastPinValue);
-void updateMax7219Display(LedControl display, long number);
+void updateMax7219Display(LedControl display, long number, int decimalPlaces = 0);
+void showNumberOnDisplay(LedControl &disp, const char* value, int deviceDigits);
 
 // Buttons
 void handleMomentaryButton(int buttonPin, int &lastState, const char* buttonId);

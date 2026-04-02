@@ -34,61 +34,101 @@ void updateLedValue(int pin, int value, int& lastPinValue) {
   lastPinValue = value;
 }
 
-void updateMax7219Display(LedControl display, long number) {
-  int ones = 0;
-  int tens = 0;
-  int hundreds = 0;
-  int thousands = 0;
-  int tenThousands = 0;
-  long numberDivide = number;
-  long numberCopy = number;
-  bool isNegative = false;
-  int lastDigit = 0;
-
+void updateMax7219Display(LedControl display, long number, int decimalPlaces) {
   display.clearDisplay(0);
 
-  if (numberCopy < 0) {
+  bool isNegative = false;
+  long v = number;
+
+  if (v < 0) {
     isNegative = true;
-    numberCopy = numberCopy * -1;
-    numberDivide = numberCopy;
+    v = -v;
   }
 
+  // Count how many digits the number has
+  int numDigits = 0;
+  long temp = v;
+  do {
+    numDigits++;
+    temp /= 10;
+  } while (temp > 0);
 
-  ones = numberDivide % 10;
-  Serial.print(ones);
-   Serial.println();
-  display.setDigit(0, 0, ones, false);
-  lastDigit++;
-
-  if (numberCopy > 9) {
-    numberDivide = numberDivide / 10;
-    tens = numberDivide % 10;
-    display.setDigit(0, 1, tens, false);
-    lastDigit++;
+  // Write digits left to right, with decimal point
+  for (int i = 0; i < numDigits; i++) {
+    bool dp = (decimalPlaces > 0 && i == decimalPlaces);
+    display.setDigit(0, (numDigits - 1) - i, v % 10, dp);
+    v /= 10;
   }
 
-  if (numberCopy > 99) {
-    numberDivide = numberDivide / 10;
-    hundreds = numberDivide % 10;
-    display.setDigit(0, 2, hundreds, false);
-    lastDigit++;
+  if (isNegative) {
+    display.setChar(0, numDigits, '-', false);
+  }
+}
+
+// Cache for last displayed values per display (up to 8 displays, 8 digits each)
+struct DisplayCache {
+  LedControl* disp;
+  int digits[8];
+  bool dp[8];
+  int numDigits;
+};
+
+static DisplayCache displayCaches[8];
+static int displayCacheCount = 0;
+
+DisplayCache* getDisplayCache(LedControl &disp, int deviceDigits) {
+  for (int i = 0; i < displayCacheCount; i++) {
+    if (displayCaches[i].disp == &disp) return &displayCaches[i];
+  }
+  // New display - initialize cache
+  if (displayCacheCount < 8) {
+    DisplayCache* cache = &displayCaches[displayCacheCount++];
+    cache->disp = &disp;
+    cache->numDigits = deviceDigits;
+    for (int i = 0; i < 8; i++) {
+      cache->digits[i] = -1;
+      cache->dp[i] = false;
+    }
+    return cache;
+  }
+  return NULL;
+}
+
+void showNumberOnDisplay(LedControl &disp, const char* value, int deviceDigits) {
+  // Extract digits and find decimal point position
+  int digits[16];
+  int digitCount = 0;
+  int decimalAfterDigit = -1;
+
+  for (int i = 0; value[i]; i++) {
+    if (value[i] == '.') {
+      decimalAfterDigit = digitCount - 1;
+    } else if (value[i] >= '0' && value[i] <= '9') {
+      digits[digitCount++] = value[i] - '0';
+    }
   }
 
-  if (numberCopy > 999) {
-    numberDivide = numberDivide / 10;
-    thousands = numberDivide % 10;
-    display.setDigit(0, 3, thousands, false);
-    lastDigit++;
+  // Build new display state
+  int padding = deviceDigits - digitCount;
+  int newDigits[8];
+  bool newDp[8];
+
+  for (int pos = 0; pos < deviceDigits; pos++) {
+    int idx = pos - padding;
+    newDigits[pos] = (idx >= 0 && idx < digitCount) ? digits[idx] : 0;
+    newDp[pos] = (decimalAfterDigit >= 0 && idx == decimalAfterDigit);
   }
 
-  if (numberCopy > 9999) {
-    numberDivide = numberDivide / 10;
-    tenThousands = numberDivide % 10;
-    display.setDigit(0, 4, tenThousands, false);
-    lastDigit++;
-  }
+  // Get cache and only update changed digits
+  DisplayCache* cache = getDisplayCache(disp, deviceDigits);
 
-  if (isNegative == true) {
-    display.setChar(0, lastDigit, '-', false);
+  for (int pos = 0; pos < deviceDigits; pos++) {
+    if (cache == NULL || newDigits[pos] != cache->digits[pos] || newDp[pos] != cache->dp[pos]) {
+      disp.setDigit(0, pos, newDigits[pos], newDp[pos]);
+      if (cache) {
+        cache->digits[pos] = newDigits[pos];
+        cache->dp[pos] = newDp[pos];
+      }
+    }
   }
 }
