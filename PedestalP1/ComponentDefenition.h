@@ -17,16 +17,19 @@ const int pin5 = 5; // DIO
 const int pin6 = 6; //CLK
 const int pin7 = 7; //CS
 
+//Verified
 // VHF1 TFR  - Momentary Button (push button)
 const int pin8 = 8;
 int lastStatePin8 = HIGH;
 const char* buttonId8 = "BUTTON_1";
 
+//Verified
 // VHF1 test  - Momentary Button (push button)
 const int pin9 = 9;
 int lastStatePin9 = HIGH;
 const char* buttonId9 = "BUTTON_2";
 
+//Verified
 // VHF1 high digit  - Rotary Encoder
 const int pin10 = 10;    // CLK
 const int pin11 = 11;  // DT
@@ -35,6 +38,7 @@ int lastStatePin11 = HIGH;
 const char* buttonId10 = "BUTTON_3";   // CW
 const char* buttonId11 = "BUTTON_4"; // CCW
 
+//Verified
 // VHF1 low digit  - Rotary Encoder
 const int pin12 = 12;    // CLK
 const int pin13 = 13;  // DT
@@ -53,16 +57,19 @@ const int pin17 = 17; // DIO
 const int pin18 = 18; //CLK
 const int pin19 = 19; //CS
 
+// fix
 // NAV1 TFR  - Momentary Button (push button)
 const int pin20 = 20;
 int lastStatePin20 = HIGH;
 const char* buttonId20 = "BUTTON_7";
 
+//Verified
 // NAV1 test  - Momentary Button (push button)
 const int pin21 = 21;
 int lastStatePin21 = HIGH;
 const char* buttonId21 = "BUTTON_8";
 
+//Verified
 // NAV1 high digit  - Rotary Encoder
 const int pin22 = 22;    // CLK
 const int pin23 = 23;  // DT
@@ -71,9 +78,10 @@ int lastStatePin23 = HIGH;
 const char* buttonId22 = "BUTTON_9";   // CW
 const char* buttonId23 = "BUTTON_10"; // CCW
 
+//Verified
 // NAV1 low digit  - Rotary Encoder
-const int pin24 = 12;    // CLK
-const int pin25 = 13;  // DT
+const int pin24 = 24;    // CLK
+const int pin25 = 25;  // DT
 int lastStatePin24 = HIGH;
 int lastStatePin25 = HIGH;
 const char* buttonId24 = "BUTTON_11";   // CW
@@ -87,11 +95,13 @@ int lastStatePin26 = HIGH;
 const int pin27 = 27;
 int lastStatePin27 = HIGH;
 
+//Verified
 // CargoFire test (push button)
 const int pin28 = 28;
 int lastStatePin28 = HIGH;
 const char* buttonId28 = "BUTTON_13";
 
+//Verified
 // CargoFire det fwd  - 3 POS ROTARY
 const int pin29 = 29; //A
 const int pin30 = 30; // Norm
@@ -101,6 +111,7 @@ const char* buttonId29 = "BUTTON_14";
 const char* buttonId30 = "BUTTON_15";  
 const char* buttonId31 = "BUTTON_16";  
 
+//Verified
 // CargoFire det aft  - 3 POS ROTARY
 const int pin32 = 32; //A
 const int pin33 = 33; // Norm
@@ -122,6 +133,7 @@ int lastStatePin36 = HIGH;
 const int pin37 = 37;
 int lastStatePin37 = HIGH;
 
+//Verified
 // CargoFire fwd arm button (push button)
 const int pin38 = 38;
 int lastStatePin38 = HIGH;
@@ -135,11 +147,12 @@ int lastStatePin39 = HIGH;
 const int pin40 = 40;
 int lastStatePin40 = HIGH;
 
+//Verified
 // CargoFire aft arm button (push button)
 const int pin41 = 41;
 int lastStatePin41 = HIGH;
 const char* buttonId41 = "BUTTON_21";
-
+//Verified
 // CargoFire discharg(push button)
 const int pin42 = 42;
 int lastStatePin42 = HIGH;
@@ -153,6 +166,7 @@ int lastStatePin43 = HIGH;
 const int pin44 = 44;
 int lastStatePin44 = HIGH;
 
+//Verified
 // wx radar tilt - Potentiometer (analog input)
 const int pinA0 = A0;
 int pinA0PotLastVal = 0;
@@ -160,6 +174,7 @@ int pinA0PotMin = 0;
 int pinA0PotMax = 270;
 const char* pinA0PotAddress = "PMDGNG3:EVT_PEDESTAL_EXAMPLE";  // TODO: Replace with real PMDG address
 
+//Verified
 // wx radar tilt 2 - Potentiometer (analog input)
 const int pinA1 = A1;
 int pinA1PotLastVal = 0;
@@ -167,6 +182,7 @@ int pinA1PotMin = 0;
 int pinA1PotMax = 270;
 const char* pinA1PotAddress = "PMDGNG3:EVT_PEDESTAL_EXAMPLE";  // TODO: Replace with real PMDG address
 
+// fix
 // wx radar mode  - 3 POS ROTARY
 const int pin47 = 47; // test
 const int pin48 = 48; // wx
@@ -176,16 +192,19 @@ const char* buttonId47 = "BUTTON_23";
 const char* buttonId48 = "BUTTON_24";  
 const char* buttonId49 = "BUTTON_25";
 
+//Verified
 // CargoFire fwd arm button2  - Momentary Button (push button)
 const int pinA8 = A8;
 int lastStatePinA8 = HIGH;
 const char* buttonIdA8 = "BUTTON_26";
 
+//Verified
 // CargoFire aft arm button2  - Momentary Button (push button)
 const int pinA9 = A9;
 int lastStatePinA9 = HIGH;
 const char* buttonIdA9 = "BUTTON_27";
 
+//Verified
 // CargoFire discharg2  - Momentary Button (push button)
 const int pinA10 = A10;
 int lastStatePinA10 = HIGH;

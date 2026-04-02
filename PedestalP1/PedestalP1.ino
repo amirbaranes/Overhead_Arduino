@@ -23,8 +23,8 @@ LedControl vhf2Active = LedControl(pin14, pin15, pin16, 1);
 LedControl vhf2Stndby = LedControl(pin17, pin18, pin19, 1);
 
 const int displayBrightness = 1;
-noDelay displayDemo(1000);
-int displayDemoValue = 123;
+noDelay displayDemo(500);
+long displayDemoValue = 10000;
 
 
 ////////////////////////////
@@ -200,25 +200,10 @@ void loop() {
 
 void testDisplay() {
   if (displayDemo.update()) {
-    if (displayDemoValue == 999) {
-      displayDemoValue = 123;
-    }
-
-    vhf1Active.setDigit(0, 0, 1, false);
-    vhf1Active.setDigit(0, 1, 1, false);
-    vhf1Active.setDigit(0, 2, 1, false);
-
-    vhf1Stndby.setDigit(0, 0, 1, false);
-    vhf1Stndby.setDigit(0, 1, 1, false);
-    vhf1Stndby.setDigit(0, 2, 1, false);
-
-    vhf2Active.setDigit(0, 0, 1, false);
-    vhf2Active.setDigit(0, 1, 1, false);
-    vhf2Active.setDigit(0, 2, 1, false);
-
-    vhf2Stndby.setDigit(0, 0, 1, false);
-    vhf2Stndby.setDigit(0, 1, 1, false);
-    vhf2Stndby.setDigit(0, 2, 1, false);
+    showNumberOnDisplay(vhf1Active, displayDemoValue, 6);   // VHF 6 digits
+    showNumberOnDisplay(vhf1Stndby, displayDemoValue, 6);   // VHF 6 digits
+    showNumberOnDisplay(vhf2Active, displayDemoValue, 5);   // NAV 5 digits
+    showNumberOnDisplay(vhf2Stndby, displayDemoValue, 5);   // NAV 5 digits
 
     displayDemoValue++;
   }
