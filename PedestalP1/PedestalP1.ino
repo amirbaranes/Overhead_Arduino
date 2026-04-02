@@ -11,16 +11,16 @@ const unsigned long SmallDelayInterval = 1;  // in ms
 unsigned long lastBigDelayTime = 0;
 unsigned long lastSmallDelayTime = 0;
 
-bool demoMode = false;
+bool demoMode = true;
 int screenIntensity = 0;
 
 
 // 7-Segment Displays (MAX7219 / LedControl)
 // LedControl(DataIn/DIO, CLK, CS/LOAD, number of devices)
-LedControl vhf1Active = LedControl(pin2, pin3, pin4, 1);
-LedControl vhf1Stndby = LedControl(pin5, pin6, pin7, 1);
-LedControl vhf2Active = LedControl(pin14, pin15, pin16, 1);
-LedControl vhf2Stndby = LedControl(pin17, pin18, pin19, 1);
+LedControl vhf2Active = LedControl(pin2, pin3, pin4, 1);
+LedControl vhf2Stndby = LedControl(pin5, pin6, pin7, 1);
+LedControl nav2Active = LedControl(pin14, pin15, pin16, 1);
+LedControl nav2Stndby = LedControl(pin17, pin18, pin19, 1);
 
 const int displayBrightness = 1;
 noDelay displayDemo(500);
@@ -34,25 +34,25 @@ long displayDemoValue = 10000;
 void setup() {
   Serial.begin(115200);
 
-  // VHF1 buttons
-  pinMode(pin8, INPUT_PULLUP);   // VHF1 TFR
-  pinMode(pin9, INPUT_PULLUP);   // VHF1 test
+  // VHF2 buttons
+  pinMode(pin8, INPUT_PULLUP);   // VHF2 TFR
+  pinMode(pin9, INPUT_PULLUP);   // VHF2 test
 
-  // VHF1 encoders
-  pinMode(pin10, INPUT_PULLUP);  // VHF1 high CLK
-  pinMode(pin11, INPUT_PULLUP);  // VHF1 high DT
-  pinMode(pin12, INPUT_PULLUP);  // VHF1 low CLK
-  pinMode(pin13, INPUT_PULLUP);  // VHF1 low DT
+  // VHF2 encoders
+  pinMode(pin10, INPUT_PULLUP);  // VHF2 high CLK
+  pinMode(pin11, INPUT_PULLUP);  // VHF2 high DT
+  pinMode(pin12, INPUT_PULLUP);  // VHF2 low CLK
+  pinMode(pin13, INPUT_PULLUP);  // VHF2 low DT
 
-  // NAV1 buttons
-  pinMode(pin20, INPUT_PULLUP);  // NAV1 TFR
-  pinMode(pin21, INPUT_PULLUP);  // NAV1 test
+  // NAV2 buttons
+  pinMode(pin20, INPUT_PULLUP);  // NAV2 TFR
+  pinMode(pin21, INPUT_PULLUP);  // NAV2 test
 
-  // NAV1 encoders
-  pinMode(pin22, INPUT_PULLUP);  // NAV1 high CLK
-  pinMode(pin23, INPUT_PULLUP);  // NAV1 high DT
-  pinMode(pin24, INPUT_PULLUP);  // NAV1 low CLK
-  pinMode(pin25, INPUT_PULLUP);  // NAV1 low DT
+  // NAV2 encoders
+  pinMode(pin22, INPUT_PULLUP);  // NAV2 high CLK
+  pinMode(pin23, INPUT_PULLUP);  // NAV2 high DT
+  pinMode(pin24, INPUT_PULLUP);  // NAV2 low CLK
+  pinMode(pin25, INPUT_PULLUP);  // NAV2 low DT
 
   // CargoFire LEDs (OUTPUT)
   pinMode(pin26, OUTPUT);   // CargoFire ext fwd
@@ -80,8 +80,8 @@ void setup() {
   pinMode(pin33, INPUT_PULLUP);
 
   // WX radar mode - 3 POS ROTARY
-  pinMode(pin47, INPUT_PULLUP);
   pinMode(pin48, INPUT_PULLUP);
+  pinMode(pin49, INPUT_PULLUP);
 
   // pinA0, pinA1 - analog, no pinMode needed for potentiometers
 
@@ -97,25 +97,28 @@ void setup() {
 }
 
 void initializeScreens() {
-  // VHF1 Active
-  vhf1Active.shutdown(0, false);
-  vhf1Active.setIntensity(0, screenIntensity);
-  vhf1Active.clearDisplay(0);
-
-  // VHF1 Standby
-  vhf1Stndby.shutdown(0, false);
-  vhf1Stndby.setIntensity(0, screenIntensity);
-  vhf1Stndby.clearDisplay(0);
-
-  // NAV1 Active
+  // VHF2 Active
   vhf2Active.shutdown(0, false);
   vhf2Active.setIntensity(0, screenIntensity);
   vhf2Active.clearDisplay(0);
 
-  // NAV1 Standby
+  // VHF2 Standby
   vhf2Stndby.shutdown(0, false);
   vhf2Stndby.setIntensity(0, screenIntensity);
   vhf2Stndby.clearDisplay(0);
+
+  // NAV2 Active
+  nav2Active.shutdown(0, false);
+  nav2Active.setIntensity(0, screenIntensity);
+  nav2Active.clearDisplay(0);
+
+  // NAV2 Standby
+  nav2Stndby.shutdown(0, false);
+  nav2Stndby.setIntensity(0, screenIntensity);
+  nav2Stndby.clearDisplay(0);
+
+  // showNumberOnDisplay(nav2Stndby,"300.66",5);
+  // showNumberOnDisplay(nav2Active,"300.66",5);
 }
 
 void clearLeds() {
@@ -147,21 +150,21 @@ void loop() {
   if (currentTime - lastBigDelayTime >= BigDelayInterval) {
     lastBigDelayTime = currentTime;
 
-    // VHF1 buttons
-    handleMomentaryButton(pin8, lastStatePin8, buttonId8);     // VHF1 TFR
-    handleMomentaryButton(pin9, lastStatePin9, buttonId9);     // VHF1 test
+    // VHF2 buttons
+    handleMomentaryButton(pin8, lastStatePin8, buttonId8);     // VHF2 TFR
+    handleMomentaryButton(pin9, lastStatePin9, buttonId9);     // VHF2 test
 
-    // VHF1 encoders
-    handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF1 high digit
-    handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF1 low digit
+    // VHF2 encoders
+    handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF2 high digit
+    handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF2 low digit
 
-    // NAV1 buttons
-    handleMomentaryButton(pin20, lastStatePin20, buttonId20);  // NAV1 TFR
-    handleMomentaryButton(pin21, lastStatePin21, buttonId21);  // NAV1 test
+    // NAV2 buttons
+    handleMomentaryButton(pin20, lastStatePin20, buttonId20);  // NAV2 TFR
+    handleMomentaryButton(pin21, lastStatePin21, buttonId21);  // NAV2 test
 
-    // NAV1 encoders
-    handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV1 high digit
-    handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV1 low digit
+    // NAV2 encoders
+    handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV2 high digit
+    handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV2 low digit
 
     // CargoFire buttons
     handleMomentaryButton(pin28, lastStatePin28, buttonId28);  // CargoFire test
@@ -176,7 +179,7 @@ void loop() {
     handle3PositionRotary(pin32, pin33, CargoFireDetAftLastState, buttonId32, buttonId33, buttonId34);
 
     // WX radar mode - 3 POS ROTARY
-    handle3PositionRotary(pin47, pin48, wxRadarModeLastState, buttonId47, buttonId48, buttonId49);
+    handle3PositionRotary(pin48, pin49, wxRadarModeLastState, buttonId48, buttonId49, buttonId51);
 
     // CargoFire extra buttons
     handleMomentaryButton(pinA8, lastStatePinA8, buttonIdA8);    // CargoFire fwd arm button2
@@ -200,10 +203,10 @@ void loop() {
 
 void testDisplay() {
   if (displayDemo.update()) {
-    showNumberOnDisplay(vhf1Active, displayDemoValue, 6);   // VHF 6 digits
-    showNumberOnDisplay(vhf1Stndby, displayDemoValue, 6);   // VHF 6 digits
-    showNumberOnDisplay(vhf2Active, displayDemoValue, 5);   // NAV 5 digits
-    showNumberOnDisplay(vhf2Stndby, displayDemoValue, 5);   // NAV 5 digits
+    showNumberOnDisplay(vhf2Active, displayDemoValue, 6);   // VHF 6 digits
+    showNumberOnDisplay(vhf2Stndby, displayDemoValue, 6);   // VHF 6 digits
+    showNumberOnDisplay(nav2Active, displayDemoValue, 5);   // NAV 5 digits
+    showNumberOnDisplay(nav2Stndby, displayDemoValue, 5);   // NAV 5 digits
 
     displayDemoValue++;
   }
@@ -234,28 +237,6 @@ void onSimState() {
 }
 
 // Display callbacks
-void onVhf1ActiveChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(vhf1Active, reversed);
-}
-
-void onVhf1StndbyChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(vhf1Stndby, reversed);
-}
-
 void onVhf2ActiveChange() {
   int val = messenger.readInt32Arg();
   int reversed = 0;
@@ -276,6 +257,28 @@ void onVhf2StndbyChange() {
     val /= 10;
   }
   updateMax7219Display(vhf2Stndby, reversed);
+}
+
+void onNav2ActiveChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(nav2Active, reversed);
+}
+
+void onNav2StndbyChange() {
+  int val = messenger.readInt32Arg();
+  int reversed = 0;
+  while (val != 0) {
+    int digit = val % 10;
+    reversed = reversed * 10 + digit;
+    val /= 10;
+  }
+  updateMax7219Display(nav2Stndby, reversed);
 }
 
 // LED callbacks
@@ -330,10 +333,10 @@ void attachCommandCallbacks() {
   messenger.attach(kRequest, onIdentifyRequest);
 
   // Displays
-  messenger.attach(K_VHF1_ACTIVE, onVhf1ActiveChange);
-  messenger.attach(K_VHF1_STNDBY, onVhf1StndbyChange);
-  messenger.attach(K_NAV1_ACTIVE, onVhf2ActiveChange);
-  messenger.attach(K_NAV1_STNDBY, onVhf2StndbyChange);
+  messenger.attach(K_VHF2_ACTIVE, onVhf2ActiveChange);
+  messenger.attach(K_VHF2_STNDBY, onVhf2StndbyChange);
+  messenger.attach(K_NAV2_ACTIVE, onNav2ActiveChange);
+  messenger.attach(K_NAV2_STNDBY, onNav2StndbyChange);
 
   // LEDs
   messenger.attach(K_CARGO_FIRE_EXT_FWD, onCargoFireExtFwdChange);
@@ -370,38 +373,38 @@ void onIdentifyRequest() {
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg(F("ADD"));
-    messenger.sendCmdArg(K_VHF1_ACTIVE);
-    messenger.sendCmdArg(F("Pedestal_P1/K_VHF1_ACTIVE"));
+    messenger.sendCmdArg(K_VHF2_ACTIVE);
+    messenger.sendCmdArg(F("Pedestal_P1/K_VHF2_ACTIVE"));
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
-    messenger.sendCmdArg(F("K_VHF1_ACTIVE"));
+    messenger.sendCmdArg(F("K_VHF2_ACTIVE"));
     messenger.sendCmdEnd();
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg(F("ADD"));
-    messenger.sendCmdArg(K_VHF1_STNDBY);
-    messenger.sendCmdArg(F("Pedestal_P1/K_VHF1_STNDBY"));
+    messenger.sendCmdArg(K_VHF2_STNDBY);
+    messenger.sendCmdArg(F("Pedestal_P1/K_VHF2_STNDBY"));
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
-    messenger.sendCmdArg(F("K_VHF1_STNDBY"));
+    messenger.sendCmdArg(F("K_VHF2_STNDBY"));
     messenger.sendCmdEnd();
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg(F("ADD"));
-    messenger.sendCmdArg(K_NAV1_ACTIVE);
-    messenger.sendCmdArg(F("Pedestal_P1/K_NAV1_ACTIVE"));
+    messenger.sendCmdArg(K_NAV2_ACTIVE);
+    messenger.sendCmdArg(F("Pedestal_P1/K_NAV2_ACTIVE"));
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
-    messenger.sendCmdArg(F("K_NAV1_ACTIVE"));
+    messenger.sendCmdArg(F("K_NAV2_ACTIVE"));
     messenger.sendCmdEnd();
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg(F("ADD"));
-    messenger.sendCmdArg(K_NAV1_STNDBY);
-    messenger.sendCmdArg(F("Pedestal_P1/K_NAV1_STNDBY"));
+    messenger.sendCmdArg(K_NAV2_STNDBY);
+    messenger.sendCmdArg(F("Pedestal_P1/K_NAV2_STNDBY"));
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
-    messenger.sendCmdArg(F("K_NAV1_STNDBY"));
+    messenger.sendCmdArg(F("K_NAV2_STNDBY"));
     messenger.sendCmdEnd();
 
     // === LED Annunciators ===

@@ -7,30 +7,30 @@
 
 
 
-// VHF1 Active  - 7Seg
+// VHF2 Active  - 7Seg
 const int pin2 = 2; // DIO
 const int pin3 = 3; //CLK
 const int pin4 = 4; //CS
 
-// VHF1 Stndby  - 7Seg
+// VHF2 Stndby  - 7Seg
 const int pin5 = 5; // DIO
 const int pin6 = 6; //CLK
 const int pin7 = 7; //CS
 
 //Verified
-// VHF1 TFR  - Momentary Button (push button)
+// VHF2 TFR  - Momentary Button (push button)
 const int pin8 = 8;
 int lastStatePin8 = HIGH;
 const char* buttonId8 = "BUTTON_1";
 
 //Verified
-// VHF1 test  - Momentary Button (push button)
+// VHF2 test  - Momentary Button (push button)
 const int pin9 = 9;
 int lastStatePin9 = HIGH;
 const char* buttonId9 = "BUTTON_2";
 
 //Verified
-// VHF1 high digit  - Rotary Encoder
+// VHF2 high digit  - Rotary Encoder
 const int pin10 = 10;    // CLK
 const int pin11 = 11;  // DT
 int lastStatePin10 = HIGH;
@@ -39,7 +39,7 @@ const char* buttonId10 = "BUTTON_3";   // CW
 const char* buttonId11 = "BUTTON_4"; // CCW
 
 //Verified
-// VHF1 low digit  - Rotary Encoder
+// VHF2 low digit  - Rotary Encoder
 const int pin12 = 12;    // CLK
 const int pin13 = 13;  // DT
 int lastStatePin12 = HIGH;
@@ -47,30 +47,30 @@ int lastStatePin13 = HIGH;
 const char* buttonId12 = "BUTTON_5";   // CW
 const char* buttonId13 = "BUTTON_6"; // CCW
 
-// NAV1 Active  - 7Seg
-const int pin14 = 14; // DIO
-const int pin15 = 15; //CLK
-const int pin16 = 16; //CS
+// NAV2 Active  - 7Seg
+const int pin14 = 17; // DIO
+const int pin15 = 18; //CLK
+const int pin16 = 19; //CS
 
-// NAV1 Stndby  - 7Seg
-const int pin17 = 17; // DIO
-const int pin18 = 18; //CLK
-const int pin19 = 19; //CS
+// NAV2 Stndby  - 7Seg
+const int pin17 = 14; // DIO
+const int pin18 = 16; //CLK
+const int pin19 = 15; //CS
 
 // fix
-// NAV1 TFR  - Momentary Button (push button)
+// NAV2 TFR  - Momentary Button (push button)
 const int pin20 = 20;
 int lastStatePin20 = HIGH;
 const char* buttonId20 = "BUTTON_7";
 
 //Verified
-// NAV1 test  - Momentary Button (push button)
+// NAV2 test  - Momentary Button (push button)
 const int pin21 = 21;
 int lastStatePin21 = HIGH;
 const char* buttonId21 = "BUTTON_8";
 
 //Verified
-// NAV1 high digit  - Rotary Encoder
+// NAV2 high digit  - Rotary Encoder
 const int pin22 = 22;    // CLK
 const int pin23 = 23;  // DT
 int lastStatePin22 = HIGH;
@@ -79,7 +79,7 @@ const char* buttonId22 = "BUTTON_9";   // CW
 const char* buttonId23 = "BUTTON_10"; // CCW
 
 //Verified
-// NAV1 low digit  - Rotary Encoder
+// NAV2 low digit  - Rotary Encoder
 const int pin24 = 24;    // CLK
 const int pin25 = 25;  // DT
 int lastStatePin24 = HIGH;
@@ -182,15 +182,14 @@ int pinA1PotMin = 0;
 int pinA1PotMax = 270;
 const char* pinA1PotAddress = "PMDGNG3:EVT_PEDESTAL_EXAMPLE";  // TODO: Replace with real PMDG address
 
-// fix
 // wx radar mode  - 3 POS ROTARY
-const int pin47 = 47; // test
-const int pin48 = 48; // wx
-const int pin49 = 49; // turb_map
+const int pin48 = 48; // test
+const int pin49 = 49; // wx
+const int pin51 = 51; // turb_map
 int wxRadarModeLastState = HIGH;
-const char* buttonId47 = "BUTTON_23";  
-const char* buttonId48 = "BUTTON_24";  
-const char* buttonId49 = "BUTTON_25";
+const char* buttonId48 = "BUTTON_23";
+const char* buttonId49 = "BUTTON_24";
+const char* buttonId51 = "BUTTON_25";
 
 //Verified
 // CargoFire fwd arm button2  - Momentary Button (push button)
