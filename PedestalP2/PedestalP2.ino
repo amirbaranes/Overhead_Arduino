@@ -11,7 +11,7 @@ const unsigned long SmallDelayInterval = 1;  // in ms
 unsigned long lastBigDelayTime = 0;
 unsigned long lastSmallDelayTime = 0;
 
-bool demoMode = false;
+bool demoMode = true;
 int screenIntensity = 0;
 
 
@@ -54,12 +54,13 @@ void setup() {
   pinMode(pin24, INPUT_PULLUP);  // NAV 2 low CLK
   pinMode(pin25, INPUT_PULLUP);  // NAV 2 low DT
 
-  // XPDR mode - 5 POS ROTARY
+  // XPDR mode - 6 POS ROTARY
   pinMode(pin26, INPUT_PULLUP);
   pinMode(pin27, INPUT_PULLUP);
   pinMode(pin28, INPUT_PULLUP);
   pinMode(pin29, INPUT_PULLUP);
-  pinMode(pin30, INPUT_PULLUP);  // TA/RA
+  pinMode(pin30, INPUT_PULLUP);
+  pinMode(pin47, INPUT_PULLUP);
 
   // XPDR encoders
   pinMode(pin34, INPUT_PULLUP);  // XPDR first CLK
@@ -79,9 +80,8 @@ void setup() {
   pinMode(pin44, INPUT_PULLUP);  // Alt Source 1
   pinMode(pin45, INPUT_PULLUP);  // Alt Source 2
 
-  // Ident / XPDR test buttons
+  // Ident button
   pinMode(pin46, INPUT_PULLUP);  // Ident
-  pinMode(pin47, INPUT_PULLUP);  // XPDR test
 
   // XPDR test LED
   pinMode(pin48, OUTPUT);
@@ -171,8 +171,8 @@ void loop() {
     handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV 2 low digit
 
     // XPDR mode - 5 POS ROTARY
-    handle5PositionRotary(pin26, pin27, pin28, pin29, pin30, xpdrModeLastState,
-      buttonId26, buttonId27, buttonId28, buttonId29, buttonId30);
+    handle6PositionRotary(pin26, pin27, pin28, pin29, pin30, pin47, xpdrModeLastState,
+      buttonId26, buttonId27, buttonId28, buttonId29, buttonId30, buttonId47);
 
     // XPDR encoders
     handleRotaryEncoder(pin34, pin35, lastStatePin34, buttonId34, buttonId35);  // XPDR first digit
@@ -190,7 +190,7 @@ void loop() {
 
     // Ident / XPDR test buttons
     handleMomentaryButton(pin46, lastStatePin46, buttonId46);  // Ident
-    handleMomentaryButton(pin47, lastStatePin47, buttonId47);  // XPDR test
+    // pin47 now used for XPDR mode rotary position 6
 
     // SELCAL buttons
     handleMomentaryButton(pin49, lastStatePin49, buttonId49);  // SELCAL 1

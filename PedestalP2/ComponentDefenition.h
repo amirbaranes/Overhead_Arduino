@@ -86,18 +86,20 @@ const char* buttonId24 = "BUTTON_31";  // CW
 const char* buttonId25 = "BUTTON_32";  // CCW
 
 //verified
-// XPDR mode  - 5 POS ROTARY (off/alt/xpndr/TA/TA-RA)
+// XPDR mode  - 6 POS ROTARY (off/alt/xpndr/TA/TA-RA/test)
 const int pin26 = 26; // off
 const int pin27 = 27; // alt
 const int pin28 = 28; // xpndr
 const int pin29 = 29; // TA
 const int pin30 = 30; // TA/RA
+const int pin47 = 47; // test
 int xpdrModeLastState = -1;
 const char* buttonId26 = "BUTTON_33";
 const char* buttonId27 = "BUTTON_34";
 const char* buttonId28 = "BUTTON_35";
 const char* buttonId29 = "BUTTON_36";
 const char* buttonId30 = "BUTTON_37";
+const char* buttonId47 = "BUTTON_38";
 
 // XPDR display  - 7Seg
 const int pin31 = 31; // DIO
@@ -110,67 +112,62 @@ const int pin34 = 34;    // CLK (decrease)
 const int pin35 = 35;    // DT (increase)
 int lastStatePin34 = HIGH;
 int lastStatePin35 = HIGH;
-const char* buttonId34 = "BUTTON_38";  // CW
-const char* buttonId35 = "BUTTON_39";  // CCW
+const char* buttonId34 = "BUTTON_39";  // CW
+const char* buttonId35 = "BUTTON_40";  // CCW
 
 // XPDR second digit  - Rotary Encoder
 const int pin36 = 36;    // CLK (decrease)
 const int pin37 = 37;    // DT (increase)
 int lastStatePin36 = HIGH;
 int lastStatePin37 = HIGH;
-const char* buttonId36 = "BUTTON_40";  // CW
-const char* buttonId37 = "BUTTON_41";  // CCW
+const char* buttonId36 = "BUTTON_41";  // CW
+const char* buttonId37 = "BUTTON_42";  // CCW
 
 // XPDR third digit  - Rotary Encoder
 const int pin38 = 38;    // CLK (decrease)
 const int pin39 = 39;    // DT (increase)
 int lastStatePin38 = HIGH;
 int lastStatePin39 = HIGH;
-const char* buttonId38 = "BUTTON_42";  // CW
-const char* buttonId39 = "BUTTON_43";  // CCW
+const char* buttonId38 = "BUTTON_43";  // CW
+const char* buttonId39 = "BUTTON_44";  // CCW
 
 // XPDR fourth digit  - Rotary Encoder
 const int pin40 = 40;    // CLK (decrease)
 const int pin41 = 41;    // DT (increase)
 int lastStatePin40 = HIGH;
 int lastStatePin41 = HIGH;
-const char* buttonId40 = "BUTTON_44";  // CW
-const char* buttonId41 = "BUTTON_45";  // CCW
+const char* buttonId40 = "BUTTON_45";  // CW
+const char* buttonId41 = "BUTTON_46";  // CCW
 
 //verified
 // XPDR 1  - Switch ON OFF
 const int pin42 = 42;
 int lastStatePin42 = HIGH;
-const char* buttonId42 = "BUTTON_46";
+const char* buttonId42 = "BUTTON_47";
 
 //verified
 // XPDR 2  - Switch ON OFF
 const int pin43 = 43;
 int lastStatePin43 = HIGH;
-const char* buttonId43 = "BUTTON_47";
+const char* buttonId43 = "BUTTON_48";
 
 //verified
 // Alt Source 1  - Switch ON OFF
 const int pin44 = 44;
 int lastStatePin44 = HIGH;
-const char* buttonId44 = "BUTTON_48";
+const char* buttonId44 = "BUTTON_49";
 
 //verified
 // Alt Source 2  - Switch ON OFF
 const int pin45 = 45;
 int lastStatePin45 = HIGH;
-const char* buttonId45 = "BUTTON_49";
+const char* buttonId45 = "BUTTON_50";
 
 //verified
 // Ident  - Momentary Button (push button)
 const int pin46 = 46;
 int lastStatePin46 = HIGH;
-const char* buttonId46 = "BUTTON_50";
-
-// XPDR test  - Momentary Button (push button)
-const int pin47 = 47;
-int lastStatePin47 = HIGH;
-const char* buttonId47 = "BUTTON_51";
+const char* buttonId46 = "BUTTON_51";
 
 // XPDR test  --LED
 const int pin48 = 48;
