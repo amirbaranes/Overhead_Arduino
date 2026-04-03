@@ -171,7 +171,7 @@ void loop() {
     handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV 2 low digit
 
     // XPDR mode - 5 POS ROTARY
-    handle5PositionRotary(pin26, pin27, pin28, pin29, xpdrModeLastState,
+    handle5PositionRotary(pin26, pin27, pin28, pin29, pin30, xpdrModeLastState,
       buttonId26, buttonId27, buttonId28, buttonId29, buttonId30);
 
     // XPDR encoders

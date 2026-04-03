@@ -11,7 +11,7 @@ const unsigned long SmallDelayInterval = 1;  // in ms
 unsigned long lastBigDelayTime = 0;
 unsigned long lastSmallDelayTime = 0;
 
-bool demoMode = false;
+bool demoMode = true;
 int screenIntensity = 0;
 
 
