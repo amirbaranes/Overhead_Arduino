@@ -145,14 +145,14 @@ void loop() {
     handleMomentaryButton(pin6, lastStatePin6, buttonId6);   // Ovht fire
 
     // DISCH1 rotary (L/R/N)
-    handle3PositionRotary(pin8, pin9, disch1RotaryLastState, buttonId8, buttonId9, buttonId10);
+    handle3PositionRotary(pin8, pin9, pin10, disch1RotaryLastState, buttonId8, buttonId9, buttonId10);
 
     // DISCH1 Pull switch / back button
     handleOnOffSwitch(pin11, lastStatePin11, buttonId11);    // Pull
     handleMomentaryButton(pin12, lastStatePin12, buttonId12);  // back button
 
     // DISCH APU rotary (L/R/N)
-    handle3PositionRotary(pin18, pin19, dischApuRotaryLastState, buttonId18, buttonId19, buttonId20);
+    handle3PositionRotary(pin18, pin19, pin20, dischApuRotaryLastState, buttonId18, buttonId19, buttonId20);
 
     // DISCH APU Pull switch / back button
     handleOnOffSwitch(pin21, lastStatePin21, buttonId21);      // Pull
@@ -163,7 +163,7 @@ void loop() {
     handleOnOffSwitch(pin25, lastStatePin25, buttonId25);  // OVHT DET 2 B
 
     // DISCH2 rotary (L/R/N)
-    handle3PositionRotary(pin28, pin29, disch2RotaryLastState, buttonId28, buttonId29, buttonId30);
+    handle3PositionRotary(pin28, pin29, pin30, disch2RotaryLastState, buttonId28, buttonId29, buttonId30);
 
     // DISCH2 Pull switch / back button
     handleOnOffSwitch(pin31, lastStatePin31, buttonId31);      // Pull

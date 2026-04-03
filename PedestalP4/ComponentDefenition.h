@@ -101,6 +101,7 @@ const char* buttonId21 = "BUTTON_90";
 // V/B/R  - 3 POS ROTARY
 const int pin22 = 22; // V
 const int pin23 = 23; // B
+const int pin24 = 24; // R
 int vbrLastState = HIGH;
 const char* buttonId22 = "BUTTON_91";
 const char* buttonId23 = "BUTTON_92";

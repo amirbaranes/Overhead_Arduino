@@ -71,7 +71,7 @@ void handleOnOffOnSwitch(int switchPin1, int switchPin2, int& lastState1, int& l
 
 // Rotary Switches
 void handle2PositionRotary(int pin1, int &lastState, const char* buttonId1, const char* buttonId2);
-void handle3PositionRotary(int pin1, int pin2, int& lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3);
+void handle3PositionRotary(int pin1, int pin2, int pin3, int& lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3);
 void handle4PositionRotary(int pin1, int pin2, int pin3, int &lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3, const char* buttonId4, int &candidateState, unsigned long &stateStartTime);
 void handle5PositionRotary(int pin1, int pin2, int pin3, int pin4, int &lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3, const char* buttonId4, const char* buttonId5);
 void handle6PositionRotary(int pin1, int pin2, int pin3, int pin4, int pin5, int &lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3, const char* buttonId4, const char* buttonId5, const char* buttonId6);

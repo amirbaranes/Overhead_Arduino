@@ -52,6 +52,7 @@ void setup() {
   // V/B/R  - 3 POS ROTARY
   pinMode(pin22, INPUT_PULLUP);
   pinMode(pin23, INPUT_PULLUP);
+  pinMode(pin24, INPUT_PULLUP);
 
   // ALT, NORM switches
   pinMode(pin25, INPUT_PULLUP);
@@ -157,7 +158,7 @@ void loop() {
     handleOnOffSwitch(pin21, lastStatePin21, buttonId21);  // BOOK
 
     // V/B/R  - 3 POS ROTARY
-    handle3PositionRotary(pin22, pin23, vbrLastState, buttonId22, buttonId23, buttonId24);
+    handle3PositionRotary(pin22, pin23, pin24, vbrLastState, buttonId22, buttonId23, buttonId24);
 
     // ALT, NORM switches
     handleOnOffSwitch(pin25, lastStatePin25, buttonId25);  // ALT

@@ -27,18 +27,21 @@ void handle2PositionRotary(int pin1, int& lastState, const char* buttonId1, cons
   }
 }
 
-void handle3PositionRotary(int pin1, int pin2, int& lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3) {
+void handle3PositionRotary(int pin1, int pin2, int pin3, int& lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3) {
   int state1 = digitalRead(pin1);
   int state2 = digitalRead(pin2);
+  int state3 = digitalRead(pin3);
 
-  int currentState;
-  if (state1 == HIGH && state2 == LOW) {
+  int currentState = -1;
+  if (state1 == LOW && state2 == HIGH && state3 == HIGH) {
     currentState = 0;  // Position 1
-  } else if (state2 == HIGH && state1 == LOW) {
-    currentState = 2;  // Position 2
-  } else if (state1 == HIGH && state2 == HIGH) {
-    currentState = 1;  // Position 3
-  } else {
+  } else if (state1 == HIGH && state2 == LOW && state3 == HIGH) {
+    currentState = 1;  // Position 2
+  } else if (state1 == HIGH && state2 == HIGH && state3 == LOW) {
+    currentState = 2;  // Position 3
+  }
+
+  if (currentState == -1) {
     return;
   }
 
