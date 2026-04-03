@@ -23,12 +23,12 @@ LedControl adf1Active = LedControl(pin27, pin28, pin29, 1);
 LedControl adf1Stndby = LedControl(pin30, pin31, pin32, 1);
 
 const int displayBrightness = 1;
-noDelay displayDemo(1000);
-int displayDemoValue = 123;
+noDelay displayDemo(500);
 
 // Servo
 Servo aileronServo;
 int aileronServoAngle = 0;
+int aileronServoMiddleAngle = 0;
 int aileronServoMinimumAngle = 0;
 int aileronServoMaximumAngle = 180;
 noDelay aileronServoDemo(1000);
@@ -93,7 +93,7 @@ void resetServos() {
 
 void initializeServos() {
   delay(1000);
-  aileronServo.write(aileronServoMinimumAngle);
+  aileronServo.write(aileronServoMiddleAngle);
 }
 
 void initializeScreens() {
@@ -175,27 +175,37 @@ void loop() {
 
 void testDisplay() {
   if (displayDemo.update()) {
-    if (displayDemoValue == 999) {
-      displayDemoValue = 123;
-    }
+   // Generate random ADF frequencies (190 - 1799 kHz, no decimal)
+    char adfBuf[6];
+    sprintf(adfBuf, "%d", random(190, 1800));
+    showNumberOnDisplay(adf2Active, adfBuf, 5);
 
-    adf2Active.setDigit(0, 0, 1, false);
-    adf2Active.setDigit(0, 1, 1, false);
-    adf2Active.setDigit(0, 2, 1, false);
+    sprintf(adfBuf, "%d", random(190, 1800));
+    showNumberOnDisplay(adf2Stndby, adfBuf, 5);
 
-    adf2Stndby.setDigit(0, 0, 1, false);
-    adf2Stndby.setDigit(0, 1, 1, false);
-    adf2Stndby.setDigit(0, 2, 1, false);
+    sprintf(adfBuf, "%d", random(190, 1800));
+    showNumberOnDisplay(adf1Active, adfBuf, 5);
 
-    adf1Active.setDigit(0, 0, 1, false);
-    adf1Active.setDigit(0, 1, 1, false);
-    adf1Active.setDigit(0, 2, 1, false);
+    sprintf(adfBuf, "%d", random(190, 1800));
+    showNumberOnDisplay(adf1Stndby, adfBuf, 5);
 
-    adf1Stndby.setDigit(0, 0, 1, false);
-    adf1Stndby.setDigit(0, 1, 1, false);
-    adf1Stndby.setDigit(0, 2, 1, false);
+//         adf2Active.setDigit(0, 0, 1, false);
+//     adf2Active.setDigit(0, 1, 1, false);
+//     adf2Active.setDigit(0, 2, 1, false);
 
-    displayDemoValue++;
+// //adf2 active
+//     adf2Stndby.setDigit(0, 0, 1, false);
+//     adf2Stndby.setDigit(0, 1, 1, false);
+//     adf2Stndby.setDigit(0, 2, 1, false);
+
+//     adf1Active.setDigit(0, 0, 1, false);
+//     adf1Active.setDigit(0, 1, 1, false);
+//     adf1Active.setDigit(0, 2, 1, false);
+
+// //adf1Stndby
+//     adf1Stndby.setDigit(0, 0, 1, false);
+//     adf1Stndby.setDigit(0, 1, 1, false);
+//     adf1Stndby.setDigit(0, 2, 1, false);
   }
 }
 

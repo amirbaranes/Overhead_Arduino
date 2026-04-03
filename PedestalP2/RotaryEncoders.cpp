@@ -91,10 +91,10 @@ void handleRotaryEncoder(
   if (currentStateCLK != lastStateCLK) {
     if (digitalRead(dtPin) != currentStateCLK) {
       sendButtonState(buttonIdCW, "PRESS");
-      sendButtonState(buttonIdCCW, "RELEASE");
+     // sendButtonState(buttonIdCCW, "RELEASE");
     } else {
       sendButtonState(buttonIdCCW, "PRESS");
-      sendButtonState(buttonIdCW, "RELEASE");
+     // sendButtonState(buttonIdCW, "RELEASE");
     }
   }
   lastStateCLK = currentStateCLK;
