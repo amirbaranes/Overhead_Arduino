@@ -26,11 +26,11 @@ void handleDualEncoderRotary(
     if (timeDiff < fastTurnThreshold && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
         sendButtonState(buttonId1, "PRESS");
-        sendButtonState(buttonId2, "RELEASE");
+      //  sendButtonState(buttonId2, "RELEASE");
       }
     } else {
       sendButtonState(buttonId1, "PRESS");
-      sendButtonState(buttonId2, "RELEASE");
+    //  sendButtonState(buttonId2, "RELEASE");
     }
   }
   if ((newPosition1Outer / detentSteps) > (oldPosition1Outer / detentSteps)) {
@@ -42,11 +42,11 @@ void handleDualEncoderRotary(
     if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
         sendButtonState(buttonId3, "PRESS");
-        sendButtonState(buttonId4, "RELEASE");
+      //  sendButtonState(buttonId4, "RELEASE");
       }
     } else {
       sendButtonState(buttonId3, "PRESS");
-      sendButtonState(buttonId4, "RELEASE");
+    //  sendButtonState(buttonId4, "RELEASE");
     }
   }
 
@@ -57,11 +57,11 @@ void handleDualEncoderRotary(
 
     if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
-        sendButtonState(buttonId1, "RELEASE");
+       // sendButtonState(buttonId1, "RELEASE");
         sendButtonState(buttonId2, "PRESS");
       }
     } else {
-      sendButtonState(buttonId1, "RELEASE");
+     // sendButtonState(buttonId1, "RELEASE");
       sendButtonState(buttonId2, "PRESS");
     }
   }
@@ -72,11 +72,11 @@ void handleDualEncoderRotary(
 
     if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
-        sendButtonState(buttonId3, "RELEASE");
+     //   sendButtonState(buttonId3, "RELEASE");
         sendButtonState(buttonId4, "PRESS");
       }
     } else {
-      sendButtonState(buttonId3, "RELEASE");
+    // sendButtonState(buttonId3, "RELEASE");
       sendButtonState(buttonId4, "PRESS");
     }
   }

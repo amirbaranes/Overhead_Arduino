@@ -30,6 +30,8 @@ Encoder adf1EncoderInner(pin35, pin34);
 Encoder adf1EncoderOuter(pin36, pin37);
 long adf1OldPositionInner = -9999;
 long adf1OldPositionOuter = -9999;
+long adf1NewPositionInner = 0;
+long adf1NewPositionOuter = 0;
 
 // Servo
 Servo aileronServo;
@@ -127,9 +129,13 @@ void clearLeds() {
 void loop() {
   messenger.feedinSerialData();
 
-    handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
-      adf1OldPositionInner, adf1OldPositionOuter,
-      buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder
+    // handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
+    //   adf1OldPositionInner, adf1OldPositionOuter,
+    //   buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder V2
+
+    handleDualEncoderRotary(adf1EncoderInner, adf1EncoderOuter,
+      adf1NewPositionInner, adf1OldPositionInner, adf1NewPositionOuter, adf1OldPositionOuter,
+      buttonId34, buttonId35, buttonId36, buttonId37, false);  // ADF1 dual encoder V1
 
   if (demoMode == true) {
     testDisplay();
@@ -169,7 +175,7 @@ void loop() {
   if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {
     lastSmallDelayTime = currentTime;
 
-    handlePotentiometer2(pinA0, pinA0PotMin, pinA0PotMax, pinA0PotAddress, pinA0PotLastVal);  // Flood Bright
+   // handlePotentiometer2(pinA0, pinA0PotMin, pinA0PotMax, pinA0PotAddress, pinA0PotLastVal);  // Flood Bright
   }
 }
 
