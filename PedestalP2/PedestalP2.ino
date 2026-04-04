@@ -11,7 +11,7 @@ const unsigned long SmallDelayInterval = 1;  // in ms
 unsigned long lastBigDelayTime = 0;
 unsigned long lastSmallDelayTime = 0;
 
-bool demoMode = true;
+bool demoMode = false;
 int screenIntensity = 0;
 
 
@@ -26,6 +26,38 @@ LedControl xpdrDisplay = LedControl(pin31, pin32, pin33, 1);
 const int displayBrightness = 1;
 noDelay displayDemo(500);
 
+// VHF2 Dual Encoder
+Encoder vhf2EncoderInner(pin10, pin11);
+Encoder vhf2EncoderOuter(pin12, pin13);
+long vhf2NewPositionInner = 0;
+long vhf2OldPositionInner = -9999;
+long vhf2NewPositionOuter = 0;
+long vhf2OldPositionOuter = -9999;
+
+// NAV2 Dual Encoder
+Encoder nav2EncoderInner(pin22, pin23);
+Encoder nav2EncoderOuter(pin24, pin25);
+long nav2NewPositionInner = 0;
+long nav2OldPositionInner = -9999;
+long nav2NewPositionOuter = 0;
+long nav2OldPositionOuter = -9999;
+
+// XPDR Dual Encoder 1 (first + second digit)
+Encoder xpdrEncoder1Inner(pin34, pin35);
+Encoder xpdrEncoder1Outer(pin36, pin37);
+long xpdr1NewPositionInner = 0;
+long xpdr1OldPositionInner = -9999;
+long xpdr1NewPositionOuter = 0;
+long xpdr1OldPositionOuter = -9999;
+
+// XPDR Dual Encoder 2 (third + fourth digit)
+Encoder xpdrEncoder2Inner(pin38, pin39);
+Encoder xpdrEncoder2Outer(pin40, pin41);
+long xpdr2NewPositionInner = 0;
+long xpdr2OldPositionInner = -9999;
+long xpdr2NewPositionOuter = 0;
+long xpdr2OldPositionOuter = -9999;
+
 
 ////////////////////////////
 // Setup
@@ -34,25 +66,31 @@ noDelay displayDemo(500);
 void setup() {
   Serial.begin(115200);
 
+  // Check if the dual encoder handle it better
+  //  // VHF 2 encoders
+  // pinMode(pin10, INPUT_PULLUP);  // VHF 2 high CLK
+  // pinMode(pin11, INPUT_PULLUP);  // VHF 2 high DT
+  // pinMode(pin12, INPUT_PULLUP);  // VHF 2 low CLK
+  // pinMode(pin13, INPUT_PULLUP);  // VHF 2 low DT
+
   // VHF 2 buttons
   pinMode(pin8, INPUT_PULLUP);   // VHF 2 TFR
   pinMode(pin9, INPUT_PULLUP);   // VHF 2 com test
 
-  // VHF 2 encoders
-  pinMode(pin10, INPUT_PULLUP);  // VHF 2 high CLK
-  pinMode(pin11, INPUT_PULLUP);  // VHF 2 high DT
-  pinMode(pin12, INPUT_PULLUP);  // VHF 2 low CLK
-  pinMode(pin13, INPUT_PULLUP);  // VHF 2 low DT
+  // VHF 2 dual encoder - pins handled by Encoder library
+
+  // Check if the dual encoder handle it better
+  //   // NAV 2 encoders
+  // pinMode(pin22, INPUT_PULLUP);  // NAV 2 high CLK
+  // pinMode(pin23, INPUT_PULLUP);  // NAV 2 high DT
+  // pinMode(pin24, INPUT_PULLUP);  // NAV 2 low CLK
+  // pinMode(pin25, INPUT_PULLUP);  // NAV 2 low DT
 
   // NAV 2 buttons
   pinMode(pin20, INPUT_PULLUP);  // NAV 2 TFR
   pinMode(pin21, INPUT_PULLUP);  // NAV 2 com test
 
-  // NAV 2 encoders
-  pinMode(pin22, INPUT_PULLUP);  // NAV 2 high CLK
-  pinMode(pin23, INPUT_PULLUP);  // NAV 2 high DT
-  pinMode(pin24, INPUT_PULLUP);  // NAV 2 low CLK
-  pinMode(pin25, INPUT_PULLUP);  // NAV 2 low DT
+  // NAV 2 dual encoder - pins handled by Encoder library
 
   // XPDR mode - 6 POS ROTARY
   pinMode(pin26, INPUT_PULLUP);
@@ -62,15 +100,7 @@ void setup() {
   pinMode(pin30, INPUT_PULLUP);
   pinMode(pin47, INPUT_PULLUP);
 
-  // XPDR encoders
-  pinMode(pin34, INPUT_PULLUP);  // XPDR first CLK
-  pinMode(pin35, INPUT_PULLUP);  // XPDR first DT
-  pinMode(pin36, INPUT_PULLUP);  // XPDR second CLK
-  pinMode(pin37, INPUT_PULLUP);  // XPDR second DT
-  pinMode(pin38, INPUT_PULLUP);  // XPDR third CLK
-  pinMode(pin39, INPUT_PULLUP);  // XPDR third DT
-  pinMode(pin40, INPUT_PULLUP);  // XPDR fourth CLK
-  pinMode(pin41, INPUT_PULLUP);  // XPDR fourth DT
+  // XPDR dual encoders - pins handled by Encoder library
 
   // XPDR switches
   pinMode(pin42, INPUT_PULLUP);  // XPDR 1
@@ -144,6 +174,26 @@ void clearLeds() {
 void loop() {
   messenger.feedinSerialData();
 
+  // VHF 2 dual encoder (outside BigDelay for responsiveness)
+  handleDualEncoderRotary(vhf2EncoderInner, vhf2EncoderOuter,
+    vhf2NewPositionInner, vhf2OldPositionInner, vhf2NewPositionOuter, vhf2OldPositionOuter,
+    buttonId10, buttonId11, buttonId12, buttonId13, false);
+
+  // NAV 2 dual encoder
+  handleDualEncoderRotary(nav2EncoderInner, nav2EncoderOuter,
+    nav2NewPositionInner, nav2OldPositionInner, nav2NewPositionOuter, nav2OldPositionOuter,
+    buttonId22, buttonId23, buttonId24, buttonId25, false);
+
+  // XPDR dual encoder 1 (first + second digit)
+  handleDualEncoderRotary(xpdrEncoder1Inner, xpdrEncoder1Outer,
+    xpdr1NewPositionInner, xpdr1OldPositionInner, xpdr1NewPositionOuter, xpdr1OldPositionOuter,
+    buttonId34, buttonId35, buttonId36, buttonId37, false);
+
+  // XPDR dual encoder 2 (third + fourth digit)
+  handleDualEncoderRotary(xpdrEncoder2Inner, xpdrEncoder2Outer,
+    xpdr2NewPositionInner, xpdr2OldPositionInner, xpdr2NewPositionOuter, xpdr2OldPositionOuter,
+    buttonId38, buttonId39, buttonId40, buttonId41, false);
+
   if (demoMode == true) {
     testDisplay();
     onAnnounciatorsDemo();
@@ -154,31 +204,30 @@ void loop() {
   if (currentTime - lastBigDelayTime >= BigDelayInterval) {
     lastBigDelayTime = currentTime;
 
+    // Check if the dual encoder handle it better
+    // // VHF 2 encoders
+    // handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF 2 high digit
+    // handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF 2 low digit
+
     // VHF 2 buttons
     handleMomentaryButton(pin8, lastStatePin8, buttonId8);     // VHF 2 TFR
     handleMomentaryButton(pin9, lastStatePin9, buttonId9);     // VHF 2 com test
 
-    // VHF 2 encoders
-    handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF 2 high digit
-    handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF 2 low digit
+    // Check if the dual encoder handle it better
+    // // NAV 2 encoders
+    // handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV 2 high digit
+    // handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV 2 low digit
 
     // NAV 2 buttons
     handleMomentaryButton(pin20, lastStatePin20, buttonId20);  // NAV 2 TFR
     handleMomentaryButton(pin21, lastStatePin21, buttonId21);  // NAV 2 com test
-
-    // NAV 2 encoders
-    handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV 2 high digit
-    handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV 2 low digit
 
     // XPDR mode - 5 POS ROTARY
     handle6PositionRotary(pin26, pin27, pin28, pin29, pin30, pin47, xpdrModeLastState,
       buttonId26, buttonId27, buttonId28, buttonId29, buttonId30, buttonId47);
 
     // XPDR encoders
-    handleRotaryEncoder(pin34, pin35, lastStatePin34, buttonId34, buttonId35);  // XPDR first digit
-    handleRotaryEncoder(pin36, pin37, lastStatePin36, buttonId36, buttonId37);  // XPDR second digit
-    handleRotaryEncoder(pin38, pin39, lastStatePin38, buttonId38, buttonId39);  // XPDR third digit
-    handleRotaryEncoder(pin40, pin41, lastStatePin40, buttonId40, buttonId41);  // XPDR fourth digit
+    // XPDR encoders now handled as dual encoders outside BigDelay block
 
     // XPDR switches
     handleOnOffSwitch(pin42, lastStatePin42, buttonId42);  // XPDR 1
