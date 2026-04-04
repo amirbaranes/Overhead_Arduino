@@ -25,6 +25,22 @@ LedControl nav2Stndby = LedControl(pin17, pin18, pin19, 1);
 const int displayBrightness = 1;
 noDelay displayDemo(500);
 
+// VHF2 Dual Encoder
+Encoder vhf2EncoderInner(pin10, pin11);
+Encoder vhf2EncoderOuter(pin12, pin13);
+long vhf2NewPositionInner = 0;
+long vhf2OldPositionInner = -9999;
+long vhf2NewPositionOuter = 0;
+long vhf2OldPositionOuter = -9999;
+
+// NAV2 Dual Encoder
+Encoder nav2EncoderInner(pin22, pin23);
+Encoder nav2EncoderOuter(pin24, pin25);
+long nav2NewPositionInner = 0;
+long nav2OldPositionInner = -9999;
+long nav2NewPositionOuter = 0;
+long nav2OldPositionOuter = -9999;
+
 
 ////////////////////////////
 // Setup
@@ -33,25 +49,31 @@ noDelay displayDemo(500);
 void setup() {
   Serial.begin(115200);
 
+  //Check if handeld better in the dual encoder mode
+  // // VHF2 encoders
+  // pinMode(pin10, INPUT_PULLUP);  // VHF2 high CLK
+  // pinMode(pin11, INPUT_PULLUP);  // VHF2 high DT
+  // pinMode(pin12, INPUT_PULLUP);  // VHF2 low CLK
+  // pinMode(pin13, INPUT_PULLUP);  // VHF2 low DT
+
   // VHF2 buttons
   pinMode(pin8, INPUT_PULLUP);   // VHF2 TFR
   pinMode(pin9, INPUT_PULLUP);   // VHF2 test
 
-  // VHF2 encoders
-  pinMode(pin10, INPUT_PULLUP);  // VHF2 high CLK
-  pinMode(pin11, INPUT_PULLUP);  // VHF2 high DT
-  pinMode(pin12, INPUT_PULLUP);  // VHF2 low CLK
-  pinMode(pin13, INPUT_PULLUP);  // VHF2 low DT
+  // VHF2 dual encoder - pins handled by Encoder library
+
+  //Check if handeld better in the dual encoder mode
+  // // NAV2 encoders
+  // pinMode(pin22, INPUT_PULLUP);  // NAV2 high CLK
+  // pinMode(pin23, INPUT_PULLUP);  // NAV2 high DT
+  // pinMode(pin24, INPUT_PULLUP);  // NAV2 low CLK
+  // pinMode(pin25, INPUT_PULLUP);  // NAV2 low DT
 
   // NAV2 buttons
   pinMode(pin20, INPUT_PULLUP);  // NAV2 TFR
   pinMode(pin21, INPUT_PULLUP);  // NAV2 test
 
-  // NAV2 encoders
-  pinMode(pin22, INPUT_PULLUP);  // NAV2 high CLK
-  pinMode(pin23, INPUT_PULLUP);  // NAV2 high DT
-  pinMode(pin24, INPUT_PULLUP);  // NAV2 low CLK
-  pinMode(pin25, INPUT_PULLUP);  // NAV2 low DT
+  // NAV2 dual encoder - pins handled by Encoder library
 
   // CargoFire LEDs (OUTPUT)
   pinMode(pin26, OUTPUT);   // CargoFire ext fwd
@@ -139,6 +161,16 @@ void clearLeds() {
 void loop() {
   messenger.feedinSerialData();
 
+  // VHF2 dual encoder (outside BigDelay for responsiveness)
+  handleDualEncoderRotary(vhf2EncoderInner, vhf2EncoderOuter,
+    vhf2NewPositionInner, vhf2OldPositionInner, vhf2NewPositionOuter, vhf2OldPositionOuter,
+    buttonId10, buttonId11, buttonId12, buttonId13, false);
+
+  // NAV2 dual encoder
+  handleDualEncoderRotary(nav2EncoderInner, nav2EncoderOuter,
+    nav2NewPositionInner, nav2OldPositionInner, nav2NewPositionOuter, nav2OldPositionOuter,
+    buttonId22, buttonId23, buttonId24, buttonId25, false);
+
   if (demoMode == true) {
     testDisplay();
     onAnnounciatorsDemo();
@@ -149,21 +181,22 @@ void loop() {
   if (currentTime - lastBigDelayTime >= BigDelayInterval) {
     lastBigDelayTime = currentTime;
 
+    // Check if handled better in dual encoder mode
+    // // VHF2 encoders
+    // handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF2 high digit
+    // handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF2 low digit
+
+    // // NAV2 encoders
+    // handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV2 high digit
+    // handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV2 low digit
+
     // VHF2 buttons
     handleMomentaryButton(pin8, lastStatePin8, buttonId8);     // VHF2 TFR
     handleMomentaryButton(pin9, lastStatePin9, buttonId9);     // VHF2 test
 
-    // VHF2 encoders
-    handleRotaryEncoder(pin10, pin11, lastStatePin10, buttonId10, buttonId11);  // VHF2 high digit
-    handleRotaryEncoder(pin12, pin13, lastStatePin12, buttonId12, buttonId13);  // VHF2 low digit
-
     // NAV2 buttons
     handleMomentaryButton(pin20, lastStatePin20, buttonId20);  // NAV2 TFR
     handleMomentaryButton(pin21, lastStatePin21, buttonId21);  // NAV2 test
-
-    // NAV2 encoders
-    handleRotaryEncoder(pin22, pin23, lastStatePin22, buttonId22, buttonId23);  // NAV2 high digit
-    handleRotaryEncoder(pin24, pin25, lastStatePin24, buttonId24, buttonId25);  // NAV2 low digit
 
     // CargoFire buttons
     handleMomentaryButton(pin28, lastStatePin28, buttonId28);  // CargoFire test
