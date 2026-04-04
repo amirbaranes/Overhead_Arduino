@@ -36,9 +36,9 @@ long adf1NewPositionOuter = 0;
 // Servo
 Servo aileronServo;
 int aileronServoAngle = 0;
-int aileronServoMiddleAngle = 0;
+int aileronServoMiddleAngle = 68;
 int aileronServoMinimumAngle = 0;
-int aileronServoMaximumAngle = 180;
+int aileronServoMaximumAngle = 130;
 noDelay aileronServoDemo(1000);
 int aileronServoDemoCurrentValue = aileronServoMinimumAngle;
 
@@ -93,11 +93,12 @@ void setup() {
 void resetServos() {
   aileronServo.attach(pin49);
   aileronServo.write(0);
+  delay(1000);
 }
 
 void initializeServos() {
-  delay(1000);
   aileronServo.write(aileronServoMiddleAngle);
+  delay(500);
 }
 
 void initializeScreens() {
