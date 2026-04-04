@@ -179,7 +179,65 @@ void loop() {
     handleOnOffSwitch(pin52, lastStatePin52, buttonId52);  // ADF2
     handleOnOffSwitch(pin53, lastStatePin53, buttonId53);  // MKR
     handleOnOffSwitch(pinA15, lastStatePinA15, buttonIdA15);  // SPKR
+
+    // Update audio panel LEDs based on switch states
+    updateAudioPanelLeds();
   }
+}
+
+
+
+
+  //BUTTONS
+    // testAnnounciatorBlink(pin46); // HF1
+  // testAnnounciatorBlink(pin48); // HF2
+  // testAnnounciatorBlink(pin52); //FLT
+  // testAnnounciatorBlink(pin47); //NAV2
+  // testAnnounciatorBlink(pin42); //VHF2
+  // testAnnounciatorBlink(pin51); //ADF2
+  // testAnnounciatorBlink(pin41); //VHF1
+  // testAnnounciatorBlink(pin45); //NAV1
+  // testAnnounciatorBlink(pin35); //SVC
+  // testAnnounciatorBlink(pinA15); //SPKR
+  // testAnnounciatorBlink(pin43); //PA
+  // testAnnounciatorBlink(pin49); //ADF1
+  // testAnnounciatorBlink(pin44);  //VHF3
+  // testAnnounciatorBlink(pin53); //MKR
+
+
+//Leds
+    // testAnnounciatorBlink(pin27); // HF1
+  // testAnnounciatorBlink(pin28); // HF2
+  // testAnnounciatorBlink(pin29); //FLT
+  // testAnnounciatorBlink(pin30); //NAV2
+  // testAnnounciatorBlink(pin31); //VHF2
+  // testAnnounciatorBlink(pin32); //ADF2
+  // testAnnounciatorBlink(pin33); //VHF1
+  // testAnnounciatorBlink(pin34); //NAV1
+  // testAnnounciatorBlink(pin35); //SVC
+  // testAnnounciatorBlink(pin36); //SPKR
+  // testAnnounciatorBlink(pin37); //PA
+  // testAnnounciatorBlink(pin38); //ADF1
+  // testAnnounciatorBlink(pin39);  //VHF3
+  // testAnnounciatorBlink(pin40); //MKR
+
+
+void updateAudioPanelLeds() {
+  // Each switch LOW = pressed/on, so LED should be on
+ digitalWrite(pin33, digitalRead(pin41) == LOW ? HIGH : LOW);  // VHF1
+  digitalWrite(pin31, digitalRead(pin42) == LOW ? HIGH : LOW);  // VHF2
+  digitalWrite(pin39, digitalRead(pin44) == LOW ? HIGH : LOW);  // VHF3
+  digitalWrite(pin27, digitalRead(pin46) == LOW ? HIGH : LOW);  // HF1
+  digitalWrite(pin28, digitalRead(pin48) == LOW ? HIGH : LOW);  // HF2
+  digitalWrite(pin29, digitalRead(pin52) == LOW ? HIGH : LOW);  // FLT
+  digitalWrite(pin35, digitalRead(pin50) == LOW ? HIGH : LOW);  // SVO
+  digitalWrite(pin37, digitalRead(pin43) == LOW ? HIGH : LOW);  // PA
+  digitalWrite(pin34, digitalRead(pin45) == LOW ? HIGH : LOW);  // NAV1
+  digitalWrite(pin30, digitalRead(pin47) == LOW ? HIGH : LOW);  // NAV2
+  digitalWrite(pin38, digitalRead(pin49) == LOW ? HIGH : LOW);  // ADF1
+  digitalWrite(pin32, digitalRead(pin51) == LOW ? HIGH : LOW);  // ADF2
+  digitalWrite(pin40, digitalRead(pin53) == LOW ? HIGH : LOW);  // MKR
+  digitalWrite(pin36, digitalRead(pinA15) == LOW ? HIGH : LOW); // SPKR
 }
 
 
@@ -199,20 +257,20 @@ void onAnnounciatorsDemo() {
   testAnnounciatorBlink(pin9);
 
   // Audio panel LEDs
-  testAnnounciatorBlink(pin27);
-  testAnnounciatorBlink(pin28);
-  testAnnounciatorBlink(pin29);
-  testAnnounciatorBlink(pin30);
-  testAnnounciatorBlink(pin31);
-  testAnnounciatorBlink(pin32);
-  testAnnounciatorBlink(pin33);
-  testAnnounciatorBlink(pin34);
-  testAnnounciatorBlink(pin35);
-  testAnnounciatorBlink(pin36);
-  testAnnounciatorBlink(pin37);
-  testAnnounciatorBlink(pin38);
-  testAnnounciatorBlink(pin39);
-  testAnnounciatorBlink(pin40);
+  testAnnounciatorBlink(pin27); // HF1
+  testAnnounciatorBlink(pin28); // HF2
+  testAnnounciatorBlink(pin29); //FLT
+  testAnnounciatorBlink(pin30); //NAV2
+  testAnnounciatorBlink(pin31); //VHF2
+  testAnnounciatorBlink(pin32); //ADF2
+  testAnnounciatorBlink(pin33); //VHF1
+  testAnnounciatorBlink(pin34); //NAV1
+  testAnnounciatorBlink(pin35); //SVC
+  testAnnounciatorBlink(pin36); //SPKR
+  testAnnounciatorBlink(pin37); //PA
+  testAnnounciatorBlink(pin38); //ADF1
+  testAnnounciatorBlink(pin39);  //VHF3
+  testAnnounciatorBlink(pin40); //MKR
 }
 
 
