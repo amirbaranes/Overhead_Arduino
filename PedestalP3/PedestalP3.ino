@@ -25,6 +25,12 @@ LedControl adf1Stndby = LedControl(pin30, pin31, pin32, 1);
 const int displayBrightness = 1;
 noDelay displayDemo(500);
 
+// ADF1 Dual Encoder - objects declared before loop()
+Encoder adf1EncoderInner(pin35, pin34);
+Encoder adf1EncoderOuter(pin36, pin37);
+long adf1OldPositionInner = -9999;
+long adf1OldPositionOuter = -9999;
+
 // Servo
 Servo aileronServo;
 int aileronServoAngle = 0;
@@ -45,11 +51,7 @@ void setup() {
   // ADF 1 button
   pinMode(pin33, INPUT_PULLUP);  // ADF 1 TFR
 
-  // ADF1 encoders
-  pinMode(pin34, INPUT_PULLUP);  // ADF1 high CLK
-  pinMode(pin35, INPUT_PULLUP);  // ADF1 high DT
-  pinMode(pin36, INPUT_PULLUP);  // ADF1 low CLK
-  pinMode(pin37, INPUT_PULLUP);  // ADF1 low DT
+  // ADF1 dual encoder - pins handled by Encoder library
 
   // ADF1 digit button
   pinMode(pin38, INPUT_PULLUP);
@@ -125,6 +127,10 @@ void clearLeds() {
 void loop() {
   messenger.feedinSerialData();
 
+    handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
+      adf1OldPositionInner, adf1OldPositionOuter,
+      buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder
+
   if (demoMode == true) {
     testDisplay();
     onAileronServoDemo();
@@ -138,8 +144,7 @@ void loop() {
 
     // ADF 1
     handleMomentaryButton(pin33, lastStatePin33, buttonId33);  // ADF 1 TFR
-    handleRotaryEncoder(pin34, pin35, lastStatePin34, buttonId34, buttonId35);  // ADF1 high digit
-    handleRotaryEncoder(pin36, pin37, lastStatePin36, buttonId36, buttonId37);  // ADF1 low digit
+
     handleMomentaryButton(pin38, lastStatePin38, buttonId38);  // ADF1 digit button
 
     // ADF / ANT / Tone switches

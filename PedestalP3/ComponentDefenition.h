@@ -34,22 +34,15 @@ int lastStatePin33 = HIGH;
 const char* buttonId33 = "BUTTON_61";
 
 //Verified
-// ADF1 high digit  - Rotary Encoder
-const int pin34 = 34;    // CLK (decrease)
-const int pin35 = 35;    // DT (increase)
-int lastStatePin34 = HIGH;
-int lastStatePin35 = HIGH;
-const char* buttonId34 = "BUTTON_62";   // CW
-const char* buttonId35 = "BUTTON_63";   // CCW
-
-//Verified
-// ADF1 low digit  - Rotary Encoder
-const int pin36 = 36;    // CLK (decrease)
-const int pin37 = 37;    // DT (increase)
-int lastStatePin36 = HIGH;
-int lastStatePin37 = HIGH;
-const char* buttonId36 = "BUTTON_64";   // CW
-const char* buttonId37 = "BUTTON_65";   // CCW
+// ADF1 Dual Encoder (high/low digit)
+const int pin34 = 34;    // Inner CLK
+const int pin35 = 35;    // Inner DT
+const int pin36 = 36;    // Outer CLK
+const int pin37 = 37;    // Outer DT
+const char* buttonId34 = "BUTTON_62";   // Inner CW
+const char* buttonId35 = "BUTTON_63";   // Inner CCW
+const char* buttonId36 = "BUTTON_64";   // Outer CW
+const char* buttonId37 = "BUTTON_65";   // Outer CCW
 
 //Verified
 // ADF1 digit button  - Momentary Button (push button)

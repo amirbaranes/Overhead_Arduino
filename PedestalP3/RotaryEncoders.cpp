@@ -155,3 +155,25 @@ void handleRotaryEncoderWithButton(
   }
   lastStateCLK = currentStateCLK;
 }
+
+void handleDualEncoderRotaryV2(Encoder& innerEncoder, Encoder& outerEncoder, long& oldPositionInner, long& oldPositionOuter, const char* buttonIdInnerCW, const char* buttonIdInnerCCW, const char* buttonIdOuterCW, const char* buttonIdOuterCCW) {
+  long innerValue = innerEncoder.read();
+  if (innerValue != oldPositionInner) {
+    if (innerValue > oldPositionInner) {
+      sendButtonState(buttonIdInnerCW, "PRESS");
+    } else {
+      sendButtonState(buttonIdInnerCCW, "PRESS");
+    }
+    oldPositionInner = innerValue;
+  }
+
+  long outerValue = outerEncoder.read();
+  if (outerValue != oldPositionOuter) {
+    if (outerValue > oldPositionOuter) {
+      sendButtonState(buttonIdOuterCW, "PRESS");
+    } else {
+      sendButtonState(buttonIdOuterCCW, "PRESS");
+    }
+    oldPositionOuter = outerValue;
+  }
+}
