@@ -5,7 +5,7 @@
 ////////////////////////////
 // Constants and Globals
 ////////////////////////////
-#define DEVICE_ADDRESS "1234:BEAD:2" // Same VJOY as P1/P2/P3/P4
+#define DEVICE_ADDRESS "1234:BEAD:1" // Same VJOY as P1/P2/P3/P4
 #define DEVICE_GUID "{3e38fa2c-a899-4d33-879d-b631e22b059a}"
 
 enum {
