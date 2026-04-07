@@ -161,13 +161,13 @@ const char* buttonId44 = "BUTTON_49";
 // Alt Source 2  - Switch ON OFF
 const int pin45 = 45;
 int lastStatePin45 = HIGH;
-const char* buttonId45 = "BUTTON_50";
+const char* buttonId45 = "BUTTON_90"; //Buttons 50-90 are used by the Overhead A5
 
 //verified
 // Ident  - Momentary Button (push button)
 const int pin46 = 46;
 int lastStatePin46 = HIGH;
-const char* buttonId46 = "BUTTON_51";
+const char* buttonId46 = "BUTTON_91";
 
 // XPDR test  --LED
 const int pin48 = 48;
@@ -177,31 +177,31 @@ int lastStatePin48 = HIGH;
 // SELCAL 1  - Momentary Button (push button)
 const int pin49 = 49;
 int lastStatePin49 = HIGH;
-const char* buttonId49 = "BUTTON_52";
+const char* buttonId49 = "BUTTON_92";
 
 //verified
 // SELCAL 2  - Momentary Button (push button)
 const int pin50 = 50;
 int lastStatePin50 = HIGH;
-const char* buttonId50 = "BUTTON_53";
+const char* buttonId50 = "BUTTON_93";
 
 //verified
 // SELCAL 3  - Momentary Button (push button)
 const int pin51 = 51;
 int lastStatePin51 = HIGH;
-const char* buttonId51 = "BUTTON_54";
+const char* buttonId51 = "BUTTON_94";
 
 //verified
 // SELCAL 4  - Momentary Button (push button)
 const int pin52 = 52;
 int lastStatePin52 = HIGH;
-const char* buttonId52 = "BUTTON_55";
+const char* buttonId52 = "BUTTON_95";
 
 //verified
 // SELCAL 5  - Momentary Button (push button)
 const int pin53 = 53;
 int lastStatePin53 = HIGH;
-const char* buttonId53 = "BUTTON_56";
+const char* buttonId53 = "BUTTON_96";
 
 // SELCAL 1 led  --LED
 const int pinA1 = A1;

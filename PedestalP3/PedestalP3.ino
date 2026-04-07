@@ -17,10 +17,10 @@ int screenIntensity = 0;
 
 
 // 7-Segment Displays (MAX7219 / LedControl)
-LedControl adf2Active = LedControl(pin2, pin3, pin4, 1);
-LedControl adf2Stndby = LedControl(pin5, pin6, pin7, 1);
-LedControl adf1Active = LedControl(pin27, pin28, pin29, 1);
-LedControl adf1Stndby = LedControl(pin30, pin31, pin32, 1);
+LedControl adf2Active = LedControl(pin2, pin3, pin4, 1); // adf2 stby
+LedControl adf2Stndby = LedControl(pin5, pin6, pin7, 1); //adf2 active
+LedControl adf1Active = LedControl(pin27, pin28, pin29, 1); // adf1 stby
+LedControl adf1Stndby = LedControl(pin30, pin31, pin32, 1); // adf1 active
 
 const int displayBrightness = 1;
 noDelay displayDemo(500);

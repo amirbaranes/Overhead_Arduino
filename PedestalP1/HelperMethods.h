@@ -5,7 +5,7 @@
 ////////////////////////////
 // Constants and Globals
 ////////////////////////////
-#define DEVICE_ADDRESS "1234:BEAD:4" // TODO: Assign unique VJOY id (Overhead uses :0 and :3)
+#define DEVICE_ADDRESS "1234:BEAD:0" // Using VJOY 0 with Overhead A5
 #define DEVICE_GUID "{5318a347-9230-41aa-8162-32189b668199}"
 
 enum {

@@ -1,10 +1,50 @@
+// // DigitLedDisplay library: https://github.com/ozhantr/DigitLedDisplay
+// #include <DigitLedDisplay.h>
+
+// // DigitLedDisplay(DIO/Data, CS/LOAD, CLK)
+// // TODO: Change these pins to match your wiring
+// DigitLedDisplay display = DigitLedDisplay(2, 4, 3);
+
+// const int deviceDigits = 5;  // TODO: Change to match your display (5, 6, 8, etc.)
+// unsigned long lastUpdateTime = 0;
+// const unsigned long updateInterval = 500;  // 0.5 sec
+
+// void setup() {
+//   Serial.begin(115200);
+
+//   display.setDigitLimit(deviceDigits);
+//   display.setBright(0);    // 0-15
+//   display.printDigit(0);   // Clear display
+
+//   Serial.println("DigitLedDisplay Test - random frequencies");
+// }
+
+// void loop() {
+//   unsigned long currentTime = millis();
+
+//   if (currentTime - lastUpdateTime >= updateInterval) {
+//     lastUpdateTime = currentTime;
+
+//     // Generate random frequency and display as integer
+//     long freq = random(118000, 137000);
+//     display.printDigit(freq);
+
+//     Serial.println(freq);
+//   }
+// }
+
+
+
+
+
+
 #include <LedControl.h>
 
 // LedControl(DataIn/DIO, CLK, CS/LOAD, number of devices)
 // TODO: Change these pins to match your wiring
 LedControl display = LedControl(2, 3, 4, 1);
 
-const int deviceDigits = 6;  // TODO: Change to match your display (5, 6, 8, etc.)
+const int deviceDigits = 5;  // TODO: Change to match your display (5, 6, 8, etc.)
 unsigned long lastUpdateTime = 0;
 const unsigned long updateInterval = 500;  // 0.5 sec
 
@@ -17,6 +57,8 @@ void showNumberOnDisplay(const char* value) {
   int digits[16];
   int digitCount = 0;
   int decimalAfterDigit = -1;
+
+
 
   for (int i = 0; value[i]; i++) {
     if (value[i] == '.') {
@@ -54,15 +96,22 @@ void setup() {
 
 void loop() {
   unsigned long currentTime = millis();
+  //   display.setDigit(0, 0, 8, false);
+  // display.setDigit(0, 1, 8, false);
+  // display.setDigit(0, 2, 5, false);
+  // display.setDigit(0, 3, 2, false);
+  // display.setDigit(0, 4, 3, false);
+
 
   if (currentTime - lastUpdateTime >= updateInterval) {
     lastUpdateTime = currentTime;
 
     // Generate random frequency xxx.xxx
     char buf[10];
-    sprintf(buf, "%d.%03d", random(118, 137), random(0, 1000));
+    sprintf(buf, "%d.%03d", (int)random(118, 137), (int)random(0, 1000));
     showNumberOnDisplay(buf);
 
     Serial.println(buf);
   }
 }
+

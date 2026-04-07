@@ -5,7 +5,7 @@
 ////////////////////////////
 // Constants and Globals
 ////////////////////////////
-#define DEVICE_ADDRESS "1234:BEAD:4" // Same VJOY as P1
+#define DEVICE_ADDRESS "1234:BEAD:0" // Using VJOY 0 with Pedestal p1 + OverheadA5
 #define DEVICE_GUID "{e839cd6d-121c-45ce-b664-817e7e047806}"
 
 enum {
