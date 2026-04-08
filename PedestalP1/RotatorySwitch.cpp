@@ -55,18 +55,18 @@ void handle3PositionRotary(int pin1, int pin2, int pin3, int& lastState, const c
     switch (currentState) {
       case 0:
         sendButtonState(buttonId1, "PRESS");
-        sendButtonState(buttonId2, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
+    //    sendButtonState(buttonId2, "RELEASE");
+      //  sendButtonState(buttonId3, "RELEASE");
         break;
       case 1:
         sendButtonState(buttonId2, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
+     //   sendButtonState(buttonId1, "RELEASE");
+     //   sendButtonState(buttonId3, "RELEASE");
         break;
       case 2:
         sendButtonState(buttonId3, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId2, "RELEASE");
+     //   sendButtonState(buttonId1, "RELEASE");
+      //  sendButtonState(buttonId2, "RELEASE");
         break;
     }
   }
