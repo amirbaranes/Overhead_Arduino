@@ -303,47 +303,31 @@ void onSimState() {
 
 // Display callbacks
 void onVhf2ActiveChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(vhf2Active, reversed);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 7, 3, buf);
+  showNumberOnDisplay(vhf2Active, buf, 6);
 }
 
 void onVhf2StndbyChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(vhf2Stndby, reversed);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 7, 3, buf);
+  showNumberOnDisplay(vhf2Stndby, buf, 6);
 }
 
 void onNav2ActiveChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(nav2Active, reversed);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 6, 2, buf);
+  showNumberOnDisplay(nav2Active, buf, 5);
 }
 
 void onNav2StndbyChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(nav2Stndby, reversed);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 6, 2, buf);
+  showNumberOnDisplay(nav2Stndby, buf, 5);
 }
 
 void onXpdrChange() {
