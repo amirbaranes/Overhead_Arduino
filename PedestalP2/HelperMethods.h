@@ -73,6 +73,11 @@ void handleRotaryEncoder(int clkPin, int dtPin, int& lastStateCLK, const char* b
 void handleRotaryEncoder2(int clkPin, int dtPin, int &lastState, const char* buttonIdCW, const char* buttonIdCCW);
 void handleRotaryEncoderWithButton(int clkPin, int dtPin, int &lastStateCLK, const char* buttonIdCW, const char* buttonIdCCW);
 void handleDualEncoderRotaryV2(Encoder& innerEncoder, Encoder& outerEncoder, long& oldPositionInner, long& oldPositionOuter, const char* buttonIdInnerCW, const char* buttonIdInnerCCW, const char* buttonIdOuterCW, const char* buttonIdOuterCCW);
+void handleDualEncoderRotaryXpndr(
+  Encoder& encoderObjectInner, Encoder& encoderObjectOuter,
+  long& newPosition1Inner, long& oldPosition1Inner, long& newPosition1Outer, long& oldPosition1Outer,
+  const char* buttonId1, const char* buttonId2,
+  const char* buttonId3, const char* buttonId4, bool fastTuneSupport);
 
 // Potentiometers
 void handlePotentiometer(int pin, int min, int max, const char* addresses[], int addressCount, int &lastValue);

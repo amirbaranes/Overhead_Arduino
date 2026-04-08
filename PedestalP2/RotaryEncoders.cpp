@@ -82,6 +82,86 @@ void handleDualEncoderRotary(
   }
 }
 
+void handleDualEncoderRotaryXpndr(
+  Encoder& encoderObjectInner, Encoder& encoderObjectOuter,
+  long& newPosition1Inner, long& oldPosition1Inner, long& newPosition1Outer, long& oldPosition1Outer,
+  const char* buttonId1, const char* buttonId2,
+  const char* buttonId3, const char* buttonId4, bool fastTuneSupport) {
+  const int detentSteps = 2;  // Adjust based on your encoder's configuration
+
+  static unsigned long lastDetentTimeInner = 0;  // Static variable for inner encoder
+  static unsigned long lastDetentTimeOuter = 0;  // Static variable for outer encoder
+  static unsigned long fastTurnThreshold = 20;   // Threshold in milliseconds
+
+  newPosition1Inner = encoderObjectInner.read();
+  newPosition1Outer = encoderObjectOuter.read();
+
+  unsigned long currentMillis = millis();
+
+  if ((newPosition1Inner / detentSteps) > (oldPosition1Inner / detentSteps)) {
+    unsigned long timeDiff = currentMillis - lastDetentTimeInner;
+    lastDetentTimeInner = currentMillis;
+    oldPosition1Inner = newPosition1Inner;
+
+    if (timeDiff < fastTurnThreshold && fastTuneSupport) {
+      for (int i = 0; i < 20; i++) {
+        sendButtonState(buttonId1, "PRESS");
+     //   sendButtonState(buttonId2, "RELEASE");
+      }
+    } else {
+      sendButtonState(buttonId1, "PRESS");
+    //  sendButtonState(buttonId2, "RELEASE");
+    }
+  }
+  if ((newPosition1Outer / detentSteps) > (oldPosition1Outer / detentSteps)) {
+    unsigned long timeDiff = currentMillis - lastDetentTimeInner;
+    lastDetentTimeInner = currentMillis;
+    oldPosition1Outer = newPosition1Outer;
+
+
+    if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
+      for (int i = 0; i < 20; i++) {
+        sendButtonState(buttonId3, "PRESS");
+      //  sendButtonState(buttonId4, "RELEASE");
+      }
+    } else {
+      sendButtonState(buttonId3, "PRESS");
+    //  sendButtonState(buttonId4, "RELEASE");
+    }
+  }
+
+  if ((newPosition1Inner / detentSteps) < (oldPosition1Inner / detentSteps)) {
+    unsigned long timeDiff = currentMillis - lastDetentTimeInner;
+    lastDetentTimeInner = currentMillis;
+    oldPosition1Inner = newPosition1Inner;
+
+    if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
+      for (int i = 0; i < 20; i++) {
+      //  sendButtonState(buttonId1, "RELEASE");
+        sendButtonState(buttonId2, "PRESS");
+      }
+    } else {
+     // sendButtonState(buttonId1, "RELEASE");
+      sendButtonState(buttonId2, "PRESS");
+    }
+  }
+  if ((newPosition1Outer / detentSteps) < (oldPosition1Outer / detentSteps)) {
+    unsigned long timeDiff = currentMillis - lastDetentTimeInner;
+    lastDetentTimeInner = currentMillis;
+    oldPosition1Outer = newPosition1Outer;
+
+    if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
+      for (int i = 0; i < 20; i++) {
+       // sendButtonState(buttonId3, "RELEASE");
+        sendButtonState(buttonId4, "PRESS");
+      }
+    } else {
+    //  sendButtonState(buttonId3, "RELEASE");
+      sendButtonState(buttonId4, "PRESS");
+    }
+  }
+  }
+
 void handleRotaryEncoder(
   int clkPin, int dtPin,
   int& lastStateCLK,

@@ -185,12 +185,12 @@ void loop() {
     buttonId22, buttonId23, buttonId24, buttonId25, false);
 
   // XPDR dual encoder 1 (first + second digit)
-  handleDualEncoderRotary(xpdrEncoder1Inner, xpdrEncoder1Outer,
+  handleDualEncoderRotaryXpndr(xpdrEncoder1Inner, xpdrEncoder1Outer,
     xpdr1NewPositionInner, xpdr1OldPositionInner, xpdr1NewPositionOuter, xpdr1OldPositionOuter,
     buttonId34, buttonId35, buttonId36, buttonId37, false);
 
   // XPDR dual encoder 2 (third + fourth digit)
-  handleDualEncoderRotary(xpdrEncoder2Inner, xpdrEncoder2Outer,
+  handleDualEncoderRotaryXpndr(xpdrEncoder2Inner, xpdrEncoder2Outer,
     xpdr2NewPositionInner, xpdr2OldPositionInner, xpdr2NewPositionOuter, xpdr2OldPositionOuter,
     buttonId38, buttonId39, buttonId40, buttonId41, false);
 
