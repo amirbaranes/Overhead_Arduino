@@ -238,51 +238,21 @@ void handle6PositionRotary(int pin1, int pin2, int pin3, int pin4, int pin5, int
     switch (lastState) {
       case 0:
         sendButtonState(buttonId1, "PRESS");
-        sendButtonState(buttonId2, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
-        sendButtonState(buttonId4, "RELEASE");
-        sendButtonState(buttonId5, "RELEASE");
-        sendButtonState(buttonId6, "RELEASE");
         break;
       case 1:
         sendButtonState(buttonId2, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
-        sendButtonState(buttonId4, "RELEASE");
-        sendButtonState(buttonId5, "RELEASE");
-        sendButtonState(buttonId6, "RELEASE");
         break;
       case 2:
         sendButtonState(buttonId3, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId2, "RELEASE");
-        sendButtonState(buttonId4, "RELEASE");
-        sendButtonState(buttonId5, "RELEASE");
-        sendButtonState(buttonId6, "RELEASE");
         break;
       case 3:
         sendButtonState(buttonId4, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId2, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
-        sendButtonState(buttonId5, "RELEASE");
-        sendButtonState(buttonId6, "RELEASE");
         break;
       case 4:
         sendButtonState(buttonId5, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId2, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
-        sendButtonState(buttonId4, "RELEASE");
-        sendButtonState(buttonId6, "RELEASE");
         break;
       case 5:
         sendButtonState(buttonId6, "PRESS");
-        sendButtonState(buttonId1, "RELEASE");
-        sendButtonState(buttonId2, "RELEASE");
-        sendButtonState(buttonId3, "RELEASE");
-        sendButtonState(buttonId4, "RELEASE");
-        sendButtonState(buttonId5, "RELEASE");
         break;
     }
   }

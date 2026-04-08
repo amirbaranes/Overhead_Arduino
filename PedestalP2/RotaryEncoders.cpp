@@ -7,7 +7,7 @@ void handleDualEncoderRotary(
   long& newPosition1Inner, long& oldPosition1Inner, long& newPosition1Outer, long& oldPosition1Outer,
   const char* buttonId1, const char* buttonId2,
   const char* buttonId3, const char* buttonId4, bool fastTuneSupport) {
-  const int detentSteps = 4;  // Adjust based on your encoder's configuration
+  const int detentSteps = 1;  // Adjust based on your encoder's configuration
 
   static unsigned long lastDetentTimeInner = 0;  // Static variable for inner encoder
   static unsigned long lastDetentTimeOuter = 0;  // Static variable for outer encoder
