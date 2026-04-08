@@ -332,13 +332,7 @@ void onNav2StndbyChange() {
 
 void onXpdrChange() {
   int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(xpdrDisplay, reversed);
+  updateMax7219Display(xpdrDisplay, val);
 }
 
 // LED callbacks
