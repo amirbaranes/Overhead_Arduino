@@ -195,16 +195,16 @@ int lastStatePin44 = HIGH;
 const int pinA0 = A0;
 int pinA0PotLastVal = 0;
 int pinA0PotMin = 0;
-int pinA0PotMax = 270;
-const char* pinA0PotAddress = "PMDGNG3:EVT_PEDESTAL_EXAMPLE";  // TODO: Replace with real PMDG address
+int pinA0PotMax = 100;
+const char* pinA0PotAddress = "PMDGNG3:EVT_WXR_L_GAIN_CONTROL";  // TODO: Replace with real PMDG address
 
 //Verified
 // wx radar tilt 2 - Potentiometer (analog input)
 const int pinA1 = A1;
 int pinA1PotLastVal = 0;
 int pinA1PotMin = 0;
-int pinA1PotMax = 270;
-const char* pinA1PotAddress = "PMDGNG3:EVT_PEDESTAL_EXAMPLE";  // TODO: Replace with real PMDG address
+int pinA1PotMax = 200;
+const char* pinA1PotAddress = "PMDGNG3:EVT_WXR_L_TILT_CONTROL";  // TODO: Replace with real PMDG address
 
 //Verified
 // wx radar mode  - 3 POS ROTARY
