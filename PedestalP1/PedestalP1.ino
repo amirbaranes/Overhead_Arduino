@@ -208,10 +208,10 @@ void loop() {
     handle3PositionRotary(pin29, pin30, pin31, CargoFireDetFwdLastState, buttonId29, buttonId30, buttonId31);
 
     // CargoFire det aft - 3 POS ROTARY
-    handle3PositionRotary(pin32, pin33, pin34, CargoFireDetAftLastState, buttonId32, buttonId33, buttonId34);
+   handle3PositionRotary(pin32, pin33, pin34, CargoFireDetAftLastState, buttonId32, buttonId33, buttonId34);
 
     // WX radar mode - 3 POS ROTARY
-    handle3PositionRotary(pin48, pin49, pin51, wxRadarModeLastState, buttonId48, buttonId49, buttonId51);
+    handle3PositionRotaryForWx(pin48, pin49, pin51, wxRadarModeLastState, buttonId48, buttonId49, buttonId51);
 
     // CargoFire extra buttons
     handleMomentaryButton(pinA8, lastStatePinA8, buttonIdA8);    // CargoFire fwd arm button2

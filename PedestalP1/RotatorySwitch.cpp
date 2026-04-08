@@ -38,9 +38,9 @@ void handle3PositionRotary(int pin1, int pin2, int pin3, int& lastState, const c
   int state3 = digitalRead(pin3);
 
   int currentState = -1;
-  if (state1 == LOW && state2 == HIGH && state3 == HIGH) {
+  if (state1 == HIGH && state2 == LOW && state3 == LOW) {
     currentState = 0;
-  } else if (state1 == HIGH && state2 == LOW && state3 == HIGH) {
+  } else if (state1 == LOW && state2 == HIGH && state3 == LOW) {
     currentState = 1;
   } else if (state1 == HIGH && state2 == HIGH && state3 == LOW) {
     currentState = 2;
@@ -55,18 +55,46 @@ void handle3PositionRotary(int pin1, int pin2, int pin3, int& lastState, const c
     switch (currentState) {
       case 0:
         sendButtonState(buttonId1, "PRESS");
-    //    sendButtonState(buttonId2, "RELEASE");
-      //  sendButtonState(buttonId3, "RELEASE");
         break;
       case 1:
         sendButtonState(buttonId2, "PRESS");
-     //   sendButtonState(buttonId1, "RELEASE");
-     //   sendButtonState(buttonId3, "RELEASE");
         break;
       case 2:
         sendButtonState(buttonId3, "PRESS");
-     //   sendButtonState(buttonId1, "RELEASE");
-      //  sendButtonState(buttonId2, "RELEASE");
+        break;
+    }
+  }
+}
+
+void handle3PositionRotaryForWx(int pin1, int pin2, int pin3, int& lastState, const char* buttonId1, const char* buttonId2, const char* buttonId3) {
+  int state1 = digitalRead(pin1);
+  int state2 = digitalRead(pin2);
+  int state3 = digitalRead(pin3);
+
+  int currentState = -1;
+  if (state1 == LOW && state2 == HIGH && state3 == LOW) {
+    currentState = 0;
+  } else if (state1 == HIGH && state2 == HIGH && state3 == LOW) {
+    currentState = 1;
+  } else if (state1 == HIGH && state2 == LOW && state3 == LOW) {
+    currentState = 2;
+  }
+
+  if (currentState == -1) {
+    return;
+  }
+
+  if (currentState != lastState) {
+    lastState = currentState;
+    switch (currentState) {
+      case 0:
+        sendButtonState(buttonId1, "PRESS");
+        break;
+      case 1:
+        sendButtonState(buttonId2, "PRESS");
+        break;
+      case 2:
+        sendButtonState(buttonId3, "PRESS");
         break;
     }
   }
