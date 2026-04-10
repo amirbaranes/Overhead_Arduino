@@ -276,10 +276,9 @@ void onAdf1StndbyChange() {
 
 // Servo callback
 void onAileronServoChange() {
-  double val = messenger.readDoubleArg();
-  double value = val / (double)100;
-  double percentagePosition = (aileronServoMaximumAngle - aileronServoMinimumAngle) * value;
-  int finalValue = aileronServoMinimumAngle + percentagePosition;
+  long val = messenger.readInt32Arg();
+  int finalValue = map(val, -12000, 12000, aileronServoMinimumAngle, aileronServoMaximumAngle);
+  finalValue = constrain(finalValue, aileronServoMinimumAngle, aileronServoMaximumAngle);
   aileronServo.write(finalValue);
 }
 
