@@ -265,17 +265,19 @@ void onVhf3StndbyChange() {
 }
 
 void onAdf1ActiveChange() {
-  double val = messenger.readDoubleArg();
+  long val = messenger.readInt32Arg();
+  double freq = val / 10.0;
   char buf[10];
-  dtostrf(val, 5, 1, buf);
-  showNumberOnDisplay(adf1Active, buf, 4);
+  dtostrf(freq, 6, 1, buf);
+  showNumberOnDisplay(adf1Active, buf, 5);
 }
 
 void onAdf1StndbyChange() {
-  double val = messenger.readDoubleArg();
+  long val = messenger.readInt32Arg();
+  double freq = val / 10.0;
   char buf[10];
-  dtostrf(val, 5, 1, buf);
-  showNumberOnDisplay(adf1Stndby, buf, 4);
+  dtostrf(freq, 6, 1, buf);
+  showNumberOnDisplay(adf1Stndby, buf, 5);
 }
 
 // Servo callback
