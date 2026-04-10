@@ -19,8 +19,8 @@ enum {
   // === Data channels for components receiving data FROM SPAD.next ===
 
   // 7-Segment Displays
-  K_ADF2_ACTIVE = 10,
-  K_ADF2_STNDBY = 11,
+  K_VHF3_ACTIVE = 10,
+  K_VHF3_STNDBY = 11,
   K_ADF1_ACTIVE = 12,
   K_ADF1_STNDBY = 13,
 

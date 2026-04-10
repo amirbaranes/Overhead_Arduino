@@ -7,12 +7,12 @@
 
 
 
-// ADF 2 Active  - 7Seg
+// VHF 3 Active  - 7Seg
 const int pin2 = 2; // DIO
 const int pin3 = 3; //CLK
 const int pin4 = 4; //CS
 
-// ADF 2 Stndby  - 7Seg
+// VHF 3 Stndby  - 7Seg
 const int pin5 = 5; // DIO
 const int pin6 = 6; //CLK
 const int pin7 = 7; //CS

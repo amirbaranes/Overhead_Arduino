@@ -17,8 +17,8 @@ int screenIntensity = 0;
 
 
 // 7-Segment Displays (MAX7219 / LedControl)
-LedControl adf2Active = LedControl(pin2, pin3, pin4, 1); // adf2 stby
-LedControl adf2Stndby = LedControl(pin5, pin6, pin7, 1); //adf2 active
+LedControl vhf3Active = LedControl(pin2, pin3, pin4, 1); // vhf3 active
+LedControl vhf3Stndby = LedControl(pin5, pin6, pin7, 1); // vhf3 stndby
 LedControl adf1Active = LedControl(pin27, pin28, pin29, 1); // adf1 stby
 LedControl adf1Stndby = LedControl(pin30, pin31, pin32, 1); // adf1 active
 
@@ -102,13 +102,13 @@ void initializeServos() {
 }
 
 void initializeScreens() {
-  adf2Active.shutdown(0, false);
-  adf2Active.setIntensity(0, screenIntensity);
-  adf2Active.clearDisplay(0);
+  vhf3Active.shutdown(0, false);
+  vhf3Active.setIntensity(0, screenIntensity);
+  vhf3Active.clearDisplay(0);
 
-  adf2Stndby.shutdown(0, false);
-  adf2Stndby.setIntensity(0, screenIntensity);
-  adf2Stndby.clearDisplay(0);
+  vhf3Stndby.shutdown(0, false);
+  vhf3Stndby.setIntensity(0, screenIntensity);
+  vhf3Stndby.clearDisplay(0);
 
   adf1Active.shutdown(0, false);
   adf1Active.setIntensity(0, screenIntensity);
@@ -187,28 +187,30 @@ void loop() {
 
 void testDisplay() {
   if (displayDemo.update()) {
-   // Generate random ADF frequencies (190 - 1799 kHz, no decimal)
+   // Generate random VHF frequencies xx.xxx (drop leading 1 from 1xx.xxx)
+    char vhfBuf[10];
+    sprintf(vhfBuf, "%d.%03d", random(18, 37), random(0, 1000));
+    showNumberOnDisplay(vhf3Active, vhfBuf, 5);
+
+    sprintf(vhfBuf, "%d.%03d", random(18, 37), random(0, 1000));
+    showNumberOnDisplay(vhf3Stndby, vhfBuf, 5);
+
+    // Generate random ADF frequencies (190 - 1799 kHz, no decimal)
     char adfBuf[6];
-    sprintf(adfBuf, "%d", random(190, 1800));
-    showNumberOnDisplay(adf2Active, adfBuf, 5);
-
-    sprintf(adfBuf, "%d", random(190, 1800));
-    showNumberOnDisplay(adf2Stndby, adfBuf, 5);
-
     sprintf(adfBuf, "%d", random(190, 1800));
     showNumberOnDisplay(adf1Active, adfBuf, 5);
 
     sprintf(adfBuf, "%d", random(190, 1800));
     showNumberOnDisplay(adf1Stndby, adfBuf, 5);
 
-//         adf2Active.setDigit(0, 0, 1, false);
-//     adf2Active.setDigit(0, 1, 1, false);
-//     adf2Active.setDigit(0, 2, 1, false);
+//         vhf3Active.setDigit(0, 0, 1, false);
+//     vhf3Active.setDigit(0, 1, 1, false);
+//     vhf3Active.setDigit(0, 2, 1, false);
 
 // //adf2 active
-//     adf2Stndby.setDigit(0, 0, 1, false);
-//     adf2Stndby.setDigit(0, 1, 1, false);
-//     adf2Stndby.setDigit(0, 2, 1, false);
+//     vhf3Stndby.setDigit(0, 0, 1, false);
+//     vhf3Stndby.setDigit(0, 1, 1, false);
+//     vhf3Stndby.setDigit(0, 2, 1, false);
 
 //     adf1Active.setDigit(0, 0, 1, false);
 //     adf1Active.setDigit(0, 1, 1, false);
@@ -248,48 +250,32 @@ void onSimState() {
 }
 
 // Display callbacks
-void onAdf2ActiveChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(adf2Active, reversed);
+void onVhf3ActiveChange() {
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 7, 3, buf);
+  showNumberOnDisplay(vhf3Active, buf + 1, 5);
 }
 
-void onAdf2StndbyChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(adf2Stndby, reversed);
+void onVhf3StndbyChange() {
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 7, 3, buf);
+  showNumberOnDisplay(vhf3Stndby, buf + 1, 5);
 }
 
 void onAdf1ActiveChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(adf1Active, reversed);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 5, 1, buf);
+  showNumberOnDisplay(adf1Active, buf, 4);
 }
 
 void onAdf1StndbyChange() {
-  int val = messenger.readInt32Arg();
-  int reversed = 0;
-  while (val != 0) {
-    int digit = val % 10;
-    reversed = reversed * 10 + digit;
-    val /= 10;
-  }
-  updateMax7219Display(adf1Stndby, reversed);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 5, 1, buf);
+  showNumberOnDisplay(adf1Stndby, buf, 4);
 }
 
 // Servo callback
@@ -313,8 +299,8 @@ void attachCommandCallbacks() {
   messenger.attach(kRequest, onIdentifyRequest);
 
   // Displays
-  messenger.attach(K_ADF2_ACTIVE, onAdf2ActiveChange);
-  messenger.attach(K_ADF2_STNDBY, onAdf2StndbyChange);
+  messenger.attach(K_VHF3_ACTIVE, onVhf3ActiveChange);
+  messenger.attach(K_VHF3_STNDBY, onVhf3StndbyChange);
   messenger.attach(K_ADF1_ACTIVE, onAdf1ActiveChange);
   messenger.attach(K_ADF1_STNDBY, onAdf1StndbyChange);
 
@@ -348,20 +334,20 @@ void onIdentifyRequest() {
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg(F("ADD"));
-    messenger.sendCmdArg(K_ADF2_ACTIVE);
-    messenger.sendCmdArg(F("Pedestal_P3/K_ADF2_ACTIVE"));
+    messenger.sendCmdArg(K_VHF3_ACTIVE);
+    messenger.sendCmdArg(F("Pedestal_P3/K_VHF3_ACTIVE"));
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
-    messenger.sendCmdArg(F("K_ADF2_ACTIVE"));
+    messenger.sendCmdArg(F("K_VHF3_ACTIVE"));
     messenger.sendCmdEnd();
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg(F("ADD"));
-    messenger.sendCmdArg(K_ADF2_STNDBY);
-    messenger.sendCmdArg(F("Pedestal_P3/K_ADF2_STNDBY"));
+    messenger.sendCmdArg(K_VHF3_STNDBY);
+    messenger.sendCmdArg(F("Pedestal_P3/K_VHF3_STNDBY"));
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
-    messenger.sendCmdArg(F("K_ADF2_STNDBY"));
+    messenger.sendCmdArg(F("K_VHF3_STNDBY"));
     messenger.sendCmdEnd();
 
     messenger.sendCmdStart(kCommand);
