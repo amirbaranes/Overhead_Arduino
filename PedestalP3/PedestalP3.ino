@@ -176,7 +176,7 @@ void loop() {
   if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {
     lastSmallDelayTime = currentTime;
 
-   // handlePotentiometer2(pinA0, pinA0PotMin, pinA0PotMax, pinA0PotAddress, pinA0PotLastVal);  // Flood Bright
+    handlePotentiometer2(pinA0, pinA0PotMin, pinA0PotMax, pinA0PotAddress, pinA0PotLastVal);  // Flood Bright
   }
 }
 
