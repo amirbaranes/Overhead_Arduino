@@ -266,26 +266,12 @@ void onVhf3StndbyChange() {
 
 void onAdf1ActiveChange() {
   long val = messenger.readInt32Arg();
-  double freq = val / 10.0;
-  char buf[10];
-  if (freq < 1000.0) {
-    adf1Active.setChar(0, 4, ' ', false);
-  }
-  int numDigits = (freq >= 1000.0) ? 5 : 4;
-  dtostrf(freq, numDigits + 1, 1, buf);
-  showNumberOnDisplay(adf1Active, buf, numDigits);
+  updateMax7219Display(adf1Active, val, 1);
 }
 
 void onAdf1StndbyChange() {
   long val = messenger.readInt32Arg();
-  double freq = val / 10.0;
-  char buf[10];
-  if (freq < 1000.0) {
-    adf1Stndby.setChar(0, 4, ' ', false);
-  }
-  int numDigits = (freq >= 1000.0) ? 5 : 4;
-  dtostrf(freq, numDigits + 1, 1, buf);
-  showNumberOnDisplay(adf1Stndby, buf, numDigits);
+  updateMax7219Display(adf1Stndby, val, 1);
 }
 
 // Servo callback
