@@ -7,7 +7,7 @@ void handleDualEncoderRotary(
   long& newPosition1Inner, long& oldPosition1Inner, long& newPosition1Outer, long& oldPosition1Outer,
   const char* buttonId1, const char* buttonId2,
   const char* buttonId3, const char* buttonId4, bool fastTuneSupport) {
-  const int detentSteps = 4;  // Adjust based on your encoder's configuration
+  const int detentSteps = 2;  // Adjust based on your encoder's configuration
 
   static unsigned long lastDetentTimeInner = 0;  // Static variable for inner encoder
   static unsigned long lastDetentTimeOuter = 0;  // Static variable for outer encoder
@@ -26,7 +26,7 @@ void handleDualEncoderRotary(
     if (timeDiff < fastTurnThreshold && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
         sendButtonState(buttonId1, "PRESS");
-      //  sendButtonState(buttonId2, "RELEASE");
+     //   sendButtonState(buttonId2, "RELEASE");
       }
     } else {
       sendButtonState(buttonId1, "PRESS");
@@ -57,7 +57,7 @@ void handleDualEncoderRotary(
 
     if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
-       // sendButtonState(buttonId1, "RELEASE");
+      //  sendButtonState(buttonId1, "RELEASE");
         sendButtonState(buttonId2, "PRESS");
       }
     } else {
@@ -72,15 +72,15 @@ void handleDualEncoderRotary(
 
     if (timeDiff < fastTurnThreshold  && fastTuneSupport) {
       for (int i = 0; i < 20; i++) {
-     //   sendButtonState(buttonId3, "RELEASE");
+       // sendButtonState(buttonId3, "RELEASE");
         sendButtonState(buttonId4, "PRESS");
       }
     } else {
-    // sendButtonState(buttonId3, "RELEASE");
+    //  sendButtonState(buttonId3, "RELEASE");
       sendButtonState(buttonId4, "PRESS");
     }
   }
-}
+  }
 
 void handleRotaryEncoder(
   int clkPin, int dtPin,

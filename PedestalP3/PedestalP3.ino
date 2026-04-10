@@ -81,19 +81,19 @@ void setup() {
   // Cabin door LED
   pinMode(pin52, OUTPUT);
 
-  resetServos();
-  initializeScreens();
-  clearLeds();
+   resetServos();
+   initializeScreens();
+   clearLeds();
 
   attachCommandCallbacks();
 
-  initializeServos();
+ // initializeServos();
 }
 
 void resetServos() {
   aileronServo.attach(pin49);
-  aileronServo.write(0);
-  delay(1000);
+ aileronServo.write(0);
+  // delay(1000);
 }
 
 void initializeServos() {
@@ -130,13 +130,13 @@ void clearLeds() {
 void loop() {
   messenger.feedinSerialData();
 
-    // handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
-    //   adf1OldPositionInner, adf1OldPositionOuter,
-    //   buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder V2
+    handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
+      adf1OldPositionInner, adf1OldPositionOuter,
+      buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder V2
 
-    handleDualEncoderRotary(adf1EncoderInner, adf1EncoderOuter,
-      adf1NewPositionInner, adf1OldPositionInner, adf1NewPositionOuter, adf1OldPositionOuter,
-      buttonId34, buttonId35, buttonId36, buttonId37, false);  // ADF1 dual encoder V1
+    // handleDualEncoderRotary(adf1EncoderInner, adf1EncoderOuter,
+    //   adf1NewPositionInner, adf1OldPositionInner, adf1NewPositionOuter, adf1OldPositionOuter,
+    //   buttonId34, buttonId35, buttonId36, buttonId37, false);  // ADF1 dual encoder V1
 
   if (demoMode == true) {
     testDisplay();
