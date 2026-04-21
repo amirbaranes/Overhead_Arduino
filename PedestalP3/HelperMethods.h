@@ -30,7 +30,17 @@ enum {
   // LED
   K_CABIN_DOOR_LED = 15,
 
-  // ADD MORE DATA CHANNELS HERE (increment from 15)
+  // MicSelector right LEDs
+  K_MIC_SEL_RIGHT_1_LED = 16,
+  K_MIC_SEL_RIGHT_2_LED = 17,
+  K_MIC_SEL_RIGHT_3_LED = 18,
+  K_MIC_SEL_RIGHT_4_LED = 19,
+  K_MIC_SEL_RIGHT_5_LED = 20,
+  K_MIC_SEL_RIGHT_6_LED = 21,
+  K_MIC_SEL_RIGHT_7_LED = 22,
+  K_MIC_SEL_RIGHT_8_LED = 23,
+
+  // ADD MORE DATA CHANNELS HERE (increment from 23)
 };
 
 inline CmdMessenger messenger(Serial);

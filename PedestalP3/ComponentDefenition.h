@@ -135,3 +135,75 @@ int pinA0PotLastVal = 0;
 int pinA0PotMin = 0;
 int pinA0PotMax = 150;
 const char* pinA0PotAddress = "PMDGNG3:EVT_PED_FLOOD_CONTROL";  // TODO: Replace with real PMDG address
+
+// MicSelector right 1 led  --LED
+const int pin18 = 18;
+int lastStatePin18 = HIGH;
+
+// MicSelector right 2 led  --LED
+const int pin19 = 19;
+int lastStatePin19 = HIGH;
+
+// MicSelector right 3 led  --LED
+const int pin20 = 20;
+int lastStatePin20 = HIGH;
+
+// MicSelector right 4 led  --LED
+const int pin21 = 21;
+int lastStatePin21 = HIGH;
+
+// MicSelector right 5 led  --LED
+const int pin22 = 22;
+int lastStatePin22 = HIGH;
+
+// MicSelector right 6 led  --LED
+const int pin23 = 23;
+int lastStatePin23 = HIGH;
+
+// MicSelector right 7 led  --LED
+const int pin24 = 24;
+int lastStatePin24 = HIGH;
+
+// MicSelector right 8 led  --LED
+const int pin25 = 25;
+int lastStatePin25 = HIGH;
+
+// MicSelector right 1  - Momentary Button (push button)
+const int pinA2 = A2;
+int lastStatePinA2 = HIGH;
+const char* buttonIdA2 = "BUTTON_19";
+
+// MicSelector right 2  - Momentary Button (push button)
+const int pinA3 = A3;
+int lastStatePinA3 = HIGH;
+const char* buttonIdA3 = "BUTTON_20";
+
+// MicSelector right 3  - Momentary Button (push button)
+const int pinA4 = A4;
+int lastStatePinA4 = HIGH;
+const char* buttonIdA4 = "BUTTON_21";
+
+// MicSelector right 4  - Momentary Button (push button)
+const int pinA5 = A5;
+int lastStatePinA5 = HIGH;
+const char* buttonIdA5 = "BUTTON_22";
+
+// MicSelector right 5  - Momentary Button (push button)
+const int pinA6 = A6;
+int lastStatePinA6 = HIGH;
+const char* buttonIdA6 = "BUTTON_23";
+
+// MicSelector right 6  - Momentary Button (push button)
+const int pinA7 = A7;
+int lastStatePinA7 = HIGH;
+const char* buttonIdA7 = "BUTTON_24";
+
+// MicSelector right 7  - Momentary Button (push button)
+const int pinA8 = A8;
+int lastStatePinA8 = HIGH;
+const char* buttonIdA8 = "BUTTON_25";
+
+// MicSelector right 8  - Momentary Button (push button)
+const int pinA9 = A9;
+int lastStatePinA9 = HIGH;
+const char* buttonIdA9 = "BUTTON_26";

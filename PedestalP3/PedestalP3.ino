@@ -81,6 +81,26 @@ void setup() {
   // Cabin door LED
   pinMode(pin52, OUTPUT);
 
+  // MicSelector right LEDs (OUTPUT)
+  pinMode(pin18, OUTPUT);
+  pinMode(pin19, OUTPUT);
+  pinMode(pin20, OUTPUT);
+  pinMode(pin21, OUTPUT);
+  pinMode(pin22, OUTPUT);
+  pinMode(pin23, OUTPUT);
+  pinMode(pin24, OUTPUT);
+  pinMode(pin25, OUTPUT);
+
+  // MicSelector right buttons
+  pinMode(pinA2, INPUT_PULLUP);
+  pinMode(pinA3, INPUT_PULLUP);
+  pinMode(pinA4, INPUT_PULLUP);
+  pinMode(pinA5, INPUT_PULLUP);
+  pinMode(pinA6, INPUT_PULLUP);
+  pinMode(pinA7, INPUT_PULLUP);
+  pinMode(pinA8, INPUT_PULLUP);
+  pinMode(pinA9, INPUT_PULLUP);
+
    resetServos();
    initializeScreens();
    clearLeds();
@@ -121,6 +141,16 @@ void initializeScreens() {
 
 void clearLeds() {
   updateLedValue(pin52, 0, lastStatePin52);  // Cabin door led
+
+  // MicSelector right LEDs
+  updateLedValue(pin18, 0, lastStatePin18);
+  updateLedValue(pin19, 0, lastStatePin19);
+  updateLedValue(pin20, 0, lastStatePin20);
+  updateLedValue(pin21, 0, lastStatePin21);
+  updateLedValue(pin22, 0, lastStatePin22);
+  updateLedValue(pin23, 0, lastStatePin23);
+  updateLedValue(pin24, 0, lastStatePin24);
+  updateLedValue(pin25, 0, lastStatePin25);
 }
 
 ////////////////////////////
@@ -171,6 +201,16 @@ void loop() {
     // Stab trim switches
     handleOnOffSwitch(pin50, lastStatePin50, buttonId50);  // ovrd
     handleOnOffSwitch(pin51, lastStatePin51, buttonId51);  // norm
+
+    // MicSelector right buttons
+    handleMomentaryButton(pinA2, lastStatePinA2, buttonIdA2);  // MicSelector right 1
+    handleMomentaryButton(pinA3, lastStatePinA3, buttonIdA3);  // MicSelector right 2
+    handleMomentaryButton(pinA4, lastStatePinA4, buttonIdA4);  // MicSelector right 3
+    handleMomentaryButton(pinA5, lastStatePinA5, buttonIdA5);  // MicSelector right 4
+    handleMomentaryButton(pinA6, lastStatePinA6, buttonIdA6);  // MicSelector right 5
+    handleMomentaryButton(pinA7, lastStatePinA7, buttonIdA7);  // MicSelector right 6
+    handleMomentaryButton(pinA8, lastStatePinA8, buttonIdA8);  // MicSelector right 7
+    handleMomentaryButton(pinA9, lastStatePinA9, buttonIdA9);  // MicSelector right 8
   }
 
   if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {
@@ -235,6 +275,16 @@ void onAileronServoDemo() {
 
 void onAnnounciatorsDemo() {
   testAnnounciatorBlink(pin52);  // Cabin door led
+
+  // MicSelector right LEDs
+  testAnnounciatorBlink(pin18);
+  testAnnounciatorBlink(pin19);
+  testAnnounciatorBlink(pin20);
+  testAnnounciatorBlink(pin21);
+  testAnnounciatorBlink(pin22);
+  testAnnounciatorBlink(pin23);
+  testAnnounciatorBlink(pin24);
+  testAnnounciatorBlink(pin25);
 }
 
 
@@ -288,6 +338,16 @@ void onCabinDoorLedChange() {
   updateLedValue(pin52, val, lastStatePin52);
 }
 
+// MicSelector right LED callbacks
+void onMicSelRight1LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin18, val, lastStatePin18); }
+void onMicSelRight2LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin19, val, lastStatePin19); }
+void onMicSelRight3LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin20, val, lastStatePin20); }
+void onMicSelRight4LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin21, val, lastStatePin21); }
+void onMicSelRight5LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin22, val, lastStatePin22); }
+void onMicSelRight6LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin23, val, lastStatePin23); }
+void onMicSelRight7LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin24, val, lastStatePin24); }
+void onMicSelRight8LedChange() { int val = messenger.readInt32Arg(); updateLedValue(pin25, val, lastStatePin25); }
+
 
 void attachCommandCallbacks() {
   messenger.attach(onUnknownCommand);
@@ -304,6 +364,16 @@ void attachCommandCallbacks() {
 
   // LED
   messenger.attach(K_CABIN_DOOR_LED, onCabinDoorLedChange);
+
+  // MicSelector right LEDs
+  messenger.attach(K_MIC_SEL_RIGHT_1_LED, onMicSelRight1LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_2_LED, onMicSelRight2LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_3_LED, onMicSelRight3LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_4_LED, onMicSelRight4LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_5_LED, onMicSelRight5LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_6_LED, onMicSelRight6LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_7_LED, onMicSelRight7LedChange);
+  messenger.attach(K_MIC_SEL_RIGHT_8_LED, onMicSelRight8LedChange);
 }
 
 
@@ -383,6 +453,80 @@ void onIdentifyRequest() {
     messenger.sendCmdArg(F("U8"));
     messenger.sendCmdArg(F("RW"));
     messenger.sendCmdArg(F("K_CABIN_DOOR_LED"));
+    messenger.sendCmdEnd();
+
+    // === MicSelector right LEDs ===
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_1_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_1_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_1_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_2_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_2_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_2_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_3_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_3_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_3_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_4_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_4_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_4_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_5_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_5_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_5_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_6_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_6_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_6_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_7_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_7_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_7_LED"));
+    messenger.sendCmdEnd();
+
+    messenger.sendCmdStart(kCommand);
+    messenger.sendCmdArg(F("ADD"));
+    messenger.sendCmdArg(K_MIC_SEL_RIGHT_8_LED);
+    messenger.sendCmdArg(F("Pedestal_P3/K_MIC_SEL_RIGHT_8_LED"));
+    messenger.sendCmdArg(F("U8"));
+    messenger.sendCmdArg(F("RW"));
+    messenger.sendCmdArg(F("K_MIC_SEL_RIGHT_8_LED"));
     messenger.sendCmdEnd();
 
     // ADD MORE CONFIG REGISTRATIONS HERE
