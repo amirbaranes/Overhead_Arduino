@@ -204,6 +204,6 @@ int lastStatePinA8 = HIGH;
 const char* buttonIdA8 = "BUTTON_25";
 
 // MicSelector right 8  - Momentary Button (push button)
-const int pinA9 = A9;
+const int pinA1 = A1;
 int lastStatePinA9 = HIGH;
 const char* buttonIdA9 = "BUTTON_26";
