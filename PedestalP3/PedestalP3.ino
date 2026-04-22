@@ -99,7 +99,7 @@ void setup() {
   pinMode(pinA6, INPUT_PULLUP);
   pinMode(pinA7, INPUT_PULLUP);
   pinMode(pinA8, INPUT_PULLUP);
-  pinMode(pinA9, INPUT_PULLUP);
+  pinMode(pinA1, INPUT_PULLUP);
 
    resetServos();
    initializeScreens();
@@ -210,7 +210,7 @@ void loop() {
     handleMomentaryButton(pinA6, lastStatePinA6, buttonIdA6);  // MicSelector right 5
     handleMomentaryButton(pinA7, lastStatePinA7, buttonIdA7);  // MicSelector right 6
     handleMomentaryButton(pinA8, lastStatePinA8, buttonIdA8);  // MicSelector right 7
-    handleMomentaryButton(pinA9, lastStatePinA9, buttonIdA9);  // MicSelector right 8
+    handleMomentaryButton(pinA1, lastStatePinA9, buttonIdA9);  // MicSelector right 8
   }
 
   if (currentTime - lastSmallDelayTime >= SmallDelayInterval) {
