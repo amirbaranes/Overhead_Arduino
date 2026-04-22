@@ -118,7 +118,7 @@ void resetServos() {
 
 void initializeServos() {
   aileronServo.write(aileronServoMiddleAngle);
-  delay(500);
+  //delay(500);
 }
 
 void initializeScreens() {
@@ -297,6 +297,8 @@ void onUnknownCommand() {}
 void onSimState() {
   int val = messenger.readInt32Arg();
   isSimConnected = val == 1;
+
+  aileronServo.write(0);
 }
 
 // Display callbacks
