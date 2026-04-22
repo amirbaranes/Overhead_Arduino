@@ -332,7 +332,9 @@ void onNav2StndbyChange() {
 
 void onXpdrChange() {
   int val = messenger.readInt32Arg();
-  updateMax7219Display(xpdrDisplay, val);
+  char buf[5];
+  sprintf(buf, "%04d", val);
+  showNumberOnDisplay(xpdrDisplay, buf, 4);
 }
 
 // LED callbacks
