@@ -17,10 +17,10 @@ unsigned long lastSmallDelayTime = 0;
 
 bool demoMode = false;
 
-noDelay startupDelay(1000);
+noDelay startupDelay(2000);
 bool startupDone = false;
 
-noDelay startupDelay3s(3000);
+noDelay startupDelay3s(4000);
 bool startupDone3s = false;
 
 TM1637 fltAltDisply;
@@ -161,6 +161,11 @@ void setup() {
 
 
 
+airTempServo.attach(pin48);
+ductPress1Servo.attach(pin33);
+ductPress2Servo.attach(pin36);
+manualAltServo.attach(pin41);
+
   initializeScreens();
   //resetServos();
   clearLeds();
@@ -179,13 +184,13 @@ void initializeServos() {
 }
 
 void resetServos() {
-  airTempServo.attach(pin48);
+  //airTempServo.attach(pin48);
   airTempServo.write(0);
-  ductPress1Servo.attach(pin33);
+ // ductPress1Servo.attach(pin33);
   ductPress1Servo.write(0);
-  ductPress2Servo.attach(pin36);
+ // ductPress2Servo.attach(pin36);
   ductPress2Servo.write(0);
-  manualAltServo.attach(pin41);
+  //manualAltServo.attach(pin41);
   manualAltServo.write(0);
 }
 
@@ -769,7 +774,7 @@ void onIdentifyRequest() {
     messenger.sendCmdEnd();
 
 
-    delay(1000);
+    delay(250);
 
     messenger.sendCmdStart(kCommand);
     messenger.sendCmdArg("REFRESHDATA");
