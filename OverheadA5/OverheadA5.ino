@@ -171,7 +171,7 @@ void setup() {
 }
 
 void initializeServos() {
-  delay(1000);
+ // delay(1000);
   airTempServo.write(airTempServoMinimumAngle);
   ductPress1Servo.write(ductPress1ServoMinimumAngle);
   ductPress2Servo.write(ductPress2ServoMinimumAngle);
