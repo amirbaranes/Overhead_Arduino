@@ -15,6 +15,9 @@ unsigned long lastSmallDelayTime = 0;
 bool demoMode = false;
 int screenIntensity = 0;
 
+noDelay startupDelay(1000);
+bool startupDone = false;
+
 
 // 7-Segment Displays (MAX7219 / LedControl)
 LedControl vhf3Active = LedControl(pin2, pin3, pin4, 1); // vhf3 active
@@ -157,8 +160,18 @@ void clearLeds() {
 // Loop
 ////////////////////////////
 
+void onStartupComplete() {
+  // TODO: add startup logic here
+  aileronServo.write(0);
+}
+
 void loop() {
   messenger.feedinSerialData();
+
+  if (!startupDone && startupDelay.update()) {
+    startupDone = true;
+    onStartupComplete();
+  }
 
     handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
       adf1OldPositionInner, adf1OldPositionOuter,
@@ -298,7 +311,7 @@ void onSimState() {
   int val = messenger.readInt32Arg();
   isSimConnected = val == 1;
 
-  aileronServo.write(0);
+  //aileronServo.write(0);
 }
 
 // Display callbacks

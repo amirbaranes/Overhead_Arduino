@@ -17,6 +17,12 @@ unsigned long lastSmallDelayTime = 0;
 
 bool demoMode = false;
 
+noDelay startupDelay(1000);
+bool startupDone = false;
+
+noDelay startupDelay3s(3000);
+bool startupDone3s = false;
+
 TM1637 fltAltDisply;
 TM1637 landAltDisply;
 noDelay altDisplyDemo(1000);  //Creats a noDelay varible set to 1000ms, will call ledBlink funct
@@ -156,12 +162,12 @@ void setup() {
 
 
   initializeScreens();
-  resetServos();
+  //resetServos();
   clearLeds();
 
   attachCommandCallbacks();
 
-  initializeServos();
+  //initializeServos();
 }
 
 void initializeServos() {
@@ -216,8 +222,28 @@ void clearLeds() {
 // Loop
 ////////////////////////////
 
+void onStartupComplete() {
+  // TODO: add startup logic here
+    resetServos();
+}
+
+void onStartupComplete3s() {
+  // TODO: add 3s startup logic here
+  initializeServos();
+}
+
 void loop() {
   messenger.feedinSerialData();
+
+  if (!startupDone && startupDelay.update()) {
+    startupDone = true;
+    onStartupComplete();
+  }
+
+  if (!startupDone3s && startupDelay3s.update()) {
+    startupDone3s = true;
+    onStartupComplete3s();
+  }
 
   if (demoMode == true) {
     testDisplay();
