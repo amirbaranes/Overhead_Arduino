@@ -17,6 +17,12 @@ unsigned long lastSmallDelayTime = 0;
 bool demoMode = false;
 bool shouldHandleServoReturn = true;
 
+noDelay startupDelay(1000);
+bool startupDone = false;
+
+noDelay startupDelay3s(3000);
+bool startupDone3s = false;
+
 
 Servo cabinDiffPressureServo;
 int cabinDiffPressureAngle = 0;
@@ -133,12 +139,9 @@ void setup() {
   // pinMode(pinA14, INPUT_PULLUP);
   // pinMode(pinA15, INPUT_PULLUP);
 
-  resetServos();
   clearLeds();
 
   attachCommandCallbacks();
-
-  initializeServos();
 
 
   // ServoSection cabinClimbSections2[] = {
@@ -170,7 +173,6 @@ void setup() {
 
 
 void initializeServos() {
-  delay(1000);
   cabinDiffPressureServo.write(cabinDiffPressureMinimumAngle);
   cabinAltServo.write(cabinAltMinimumAngle);
   cabinClimbServo.write(cabinClimbMinimumAngle);
@@ -242,8 +244,27 @@ void clearLeds() {
 ////////////////////////////
 // Loop
 ////////////////////////////
+
+void onStartupComplete() {
+  resetServos();
+}
+
+void onStartupComplete3s() {
+  initializeServos();
+}
+
 void loop() {
   messenger.feedinSerialData();
+
+  if (!startupDone && startupDelay.update()) {
+    startupDone = true;
+    onStartupComplete();
+  }
+
+  if (!startupDone3s && startupDelay3s.update()) {
+    startupDone3s = true;
+    onStartupComplete3s();
+  }
 
   if (demoMode == true) {
     handleWingAntiIceAutoReturn();

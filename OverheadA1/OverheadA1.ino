@@ -16,6 +16,12 @@ bool demoMode = false;
 noDelay demoModeDelay(1000);  //Creats a noDelay varible set to 1000ms, will call ledBlink funct
 bool readyToDemo = false;
 bool shouldHandleServoReturn = true;
+
+noDelay startupDelay(1000);
+bool startupDone = false;
+
+noDelay startupDelay3s(3000);
+bool startupDone3s = false;
 int yawDumperButtonLastStatus = -1;
 
 Servo yawDumperServo;
@@ -118,12 +124,9 @@ void setup() {
   // pinMode(pinA16, INPUT_PULLUP);
 
 
-  resetServos();
   clearLeds();
 
   attachCommandCallbacks();
-
-  initializeServos();
 }
 
 void resetServos() {
@@ -137,8 +140,6 @@ void resetServos() {
 }
 
 void initializeServos() {
-
-  delay(1000);
   fuelTempGaugeServo.write(fuelTempGaugeServoMinimumAngle);
 }
 
@@ -175,11 +176,28 @@ void clearLeds() {
 // Loop
 ////////////////////////////
 
+void onStartupComplete() {
+  resetServos();
+}
+
+void onStartupComplete3s() {
+  initializeServos();
+}
+
 int buttonState = 0;
 
 void loop() {
   messenger.feedinSerialData();
 
+  if (!startupDone && startupDelay.update()) {
+    startupDone = true;
+    onStartupComplete();
+  }
+
+  if (!startupDone3s && startupDelay3s.update()) {
+    startupDone3s = true;
+    onStartupComplete3s();
+  }
 
   if (demoModeDelay.update() || readyToDemo == true) {
     readyToDemo = true;

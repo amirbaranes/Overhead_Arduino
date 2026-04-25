@@ -15,6 +15,12 @@ unsigned long lastSmallDelayTime = 0;
 bool demoMode = false;
 int screenIntensity = 0;
 
+noDelay startupDelay(1000);
+bool startupDone = false;
+
+noDelay startupDelay3s(3000);
+bool startupDone3s = false;
+
 int dcAmpsSwitchCurrentPosition = 0;
 int acAmpsSwitchCurrentPosition = 0;
 
@@ -162,8 +168,27 @@ void clearLeds() {
 // Loop
 ////////////////////////////
 
+void onStartupComplete() {
+  // TODO: add startup logic here
+}
+
+void onStartupComplete3s() {
+  // TODO: add 3s startup logic here
+}
+
 void loop() {
   messenger.feedinSerialData();
+
+  if (!startupDone && startupDelay.update()) {
+    startupDone = true;
+    onStartupComplete();
+  }
+
+  if (!startupDone3s && startupDelay3s.update()) {
+    startupDone3s = true;
+    onStartupComplete3s();
+  }
+
   if (demoMode == true) {
     testDisplay();
     onAnnounciatorsDemo();
