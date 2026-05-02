@@ -165,6 +165,8 @@ void onStartupComplete() {
   aileronServo.write(0);
 }
 
+int adftest = 0;
+
 void loop() {
   messenger.feedinSerialData();
 
@@ -173,13 +175,18 @@ void loop() {
     onStartupComplete();
   }
 
-    handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
-      adf1OldPositionInner, adf1OldPositionOuter,
-      buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder V2
+    // handleDualEncoderRotaryV2(adf1EncoderInner, adf1EncoderOuter,
+    //   adf1OldPositionInner, adf1OldPositionOuter,
+    //   buttonId34, buttonId35, buttonId36, buttonId37);  // ADF1 dual encoder V2
 
-    // handleDualEncoderRotary(adf1EncoderInner, adf1EncoderOuter,
-    //   adf1NewPositionInner, adf1OldPositionInner, adf1NewPositionOuter, adf1OldPositionOuter,
-    //   buttonId34, buttonId35, buttonId36, buttonId37, false);  // ADF1 dual encoder V1
+    handleDualEncoderRotary(adf1EncoderInner, adf1EncoderOuter,
+      adf1NewPositionInner, adf1OldPositionInner, adf1NewPositionOuter, adf1OldPositionOuter,
+      buttonId34, buttonId35, buttonId36, buttonId37, false);  // ADF1 dual encoder V1
+
+    // handleRotaryEncoderWithButton(pin37, pin36, adftest, buttonId34, buttonId35);
+    // // int i = digitalRead(pin35);
+    // // Serial.println(i);
+
 
   if (demoMode == true) {
     testDisplay();
@@ -329,14 +336,37 @@ void onVhf3StndbyChange() {
   showNumberOnDisplay(vhf3Stndby, buf + 1, 5);
 }
 
+void showAdfDisplay(LedControl &disp, const char* value) {
+  int d[8];
+  int count = 0;
+  int dpPos = -1;
+  for (int i = 0; value[i]; i++) {
+    if (value[i] == '.') dpPos = count - 1;
+    else if (value[i] >= '0' && value[i] <= '9') d[count++] = value[i] - '0';
+  }
+  for (int pos = 0; pos < 5; pos++) {
+    if (pos < count) {
+      disp.setDigit(0, pos, d[pos], pos == dpPos);
+    } else {
+      disp.setChar(0, pos, ' ', false);
+    }
+  }
+}
+
 void onAdf1ActiveChange() {
-  long val = messenger.readInt32Arg();
-  updateMax7219Display(adf1Active, val, 1);
+  double val = messenger.readDoubleArg();
+  char buf[10];
+  dtostrf(val, 6, 1, buf);
+  char* p = buf;
+  while (*p == ' ') p++;
+  showAdfDisplay(adf1Active, p);
 }
 
 void onAdf1StndbyChange() {
   long val = messenger.readInt32Arg();
-  updateMax7219Display(adf1Stndby, val, 1);
+  char buf[10];
+  sprintf(buf, "%ld.%ld", val / 10, val % 10);
+  showAdfDisplay(adf1Stndby, buf);
 }
 
 // Servo callback
